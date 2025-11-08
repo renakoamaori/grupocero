@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miembros - Cooperativa Artística</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" /> <!--Estilo personalizado-->
+</head>
+
+<body>
+    <!-- Inicio menú con logo -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <!-- Logo al principio -->
+            <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 40px"
+                    alt="Logo GC" class="rounded-pill" /></a>
+
+            <!-- Botón de colapsable -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Contenido del menú -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <!-- Sección "Mi cuenta" al lado del logo -->
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle activo" href="#" role="button" data-bs-toggle="dropdown">
+                            Panel de Miembros
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="solicitud.html">Solicitud</a></li>
+                            <li><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--FIN DEL MENU CON LOGO-->
+
+ 
+
+    <div class="container mt-5 mb-5">
+        <h1 class="text-center">Estado solicitud </h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!-- Lista de solicitudes de obras -->
+                <ul class="list-group mt-3" style="list-style: none;">
+                    <li>
+                        <!-- Cada obra es un enlace que abre el modal de revisión -->
+                        <a href="#"
+                            class="list-group-item d-flex justify-content-between align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#modalRevision1">
+                            Título de la obra 1
+                            <span class="badge bg-primary rounded-pill">Rechazado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="list-group-item d-flex justify-content-between align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#modalRevision2">
+                            Título de la obra 2
+                            <span class="badge bg-success rounded-pill">Aprobado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="list-group-item d-flex justify-content-between align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#modalRevision3">
+                            Título de la obra 3
+                            <span class="badge bg-warning rounded-pill">En espera</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="modalRevision1" tabindex="-1" aria-labelledby="modalRevisionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalRevisionLabel">Revisión de solicitud</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Detalles de la obra</h5>
+                    <p><strong>Título:</strong> Título de la obra 1</p>
+                    <p><strong>Descripción: Lorem ipsum dolor, sit amet consectetur adipisicing elit. A, in sit? Harum voluptas nulla cupiditate!</strong></p>
+                    <!-- Botón para ver la imagen en grande -->
+                    <p><strong>Archivo:</strong> [Nombre del archivo] <button type="button" class="btn btn-danger"
+                            data-bs-toggle="modal" data-bs-target="#modalImagenGrande1">Ver Imagen</button></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalImagenGrande1" tabindex="-1" aria-labelledby="modalImagenGrande1Label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalImagenGrande1Label">Imagen en grande</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí se mostrará la imagen en grande -->
+                    <img src="https://via.placeholder.com/512x512" class="img-fluid" alt="Imagen en grande">
+                </div>
+                <div class="modal-footer">
+                    <!-- Botón para cerrar el modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal"
+                        data-bs-target="#modalRevision1">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+   <!--INICIO Scripts-->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <!--FINAL Scripts-->
+
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es-CL">
 <!--INICIO HEAD-->
@@ -17,7 +18,7 @@
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
       <!-- Logo al principio -->
-      <a class="navbar-brand" href="#"><img src="https://via.placeholder.com/512x512" style="width: 40px" alt="Logo GC"
+      <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 40px" alt="Logo GC"
           class="rounded-pill" /></a>
 
       <!-- Botón de colapsable -->
@@ -59,7 +60,7 @@
                   <li><a class="dropdown-item" href="products.html#artista">Artista 2</a></li>
                 </ul>
               </li>
-              <a href="#" class="dropdown-item">Ver todos</a>
+              <a href="products.html" class="dropdown-item">Ver todos</a>
             </ul>
           </li>
           <!--FIN DROPDOWN-->
@@ -95,7 +96,7 @@
       </div>
     </div>
   </nav>
-  <!-- Fin menú con logo-->
+  <!--FIN DEL MENU CON LOGO-->
   <!-- INICIO CARRUSEL -->
   <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
@@ -131,6 +132,10 @@
     </button>
   </div>
   <!--FIN CARRUSEL-->
+  <!--Inicio botón oculto admin-->
+  <div class="bg-dark">
+    <a href="#" class="btn btn-outline-danger mt-2 adminbutton" data-bs-toggle="modal" data-bs-target="#loginModalAdmin" style="cursor:default">Acceso Admin</a>
+  </div>
   <!--INICIO SECCIÓN PRODUCTOS-->
   <section class="bg-dark fixsection">
     <div class="row justify-content-center m-5">
@@ -139,11 +144,11 @@
       </h2>
       <div class="col-md-4 col-sm-12 m-0">
         <div class="card h-100 border-0 align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
+          <img class="card-img-top img-fluid" src="img/gato.png" alt="gato_fantasia"
             style="width: 50%; height: auto;">
           <div class="card-body text-center">
             <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
+              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Gato de Fantasía</h4>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
                 aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
                 earum amet.</p>
@@ -153,11 +158,11 @@
       </div>
       <div class="col-md-4 col-sm-12 m-0">
         <div class="card h-100 border-0 mx-auto align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
+          <img class="card-img-top img-fluid" src="img/illust_108610727_20230626_195803.png" alt="Kokomi_bajo_la_lluvia"
             style="width: 50%; height: auto;">
           <div class="card-body text-center">
             <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
+              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Kokomi bajo la lluvia</h4>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
                 aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
                 earum amet.</p>
@@ -271,7 +276,7 @@
         </div>
         <!-- Formulario de inicio de sesión -->
         <div class="modal-body">
-          <form>
+          <form action="index_logged.html">
             <div class="mb-3">
               <label for="emailLogin" class="form-label">Email</label>
               <input type="email" class="form-control" id="txtEmail" required>
@@ -455,13 +460,66 @@
     </div>
   </div>
   <!-- Fin del modal foto 3-->
+  <!--MODAL Login Miembros-->
+  <div class="modal fade" id="loginModalMembers" tabindex="-1" aria-labelledby="loginModalMembersLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalMembersLabel">Iniciar sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Formulario de inicio de sesión Miembros-->
+        <div class="modal-body">
+          <form action="members.html">
+            <div class="mb-3">
+              <label for="nombreRegistro" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="txtUsuario" required>
+            </div>
+            <div class="mb-3">
+              <label for="passwordLogin" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="txtPassword" required>
+            </div>
+            <button type="submit" class="btn btn-dark">Iniciar sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--MODAL LOGIN ADMIN-->
+  <div class="modal fade" id="loginModalAdmin" tabindex="-1" aria-labelledby="loginModalAdminLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalAdminLabel">Iniciar sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Formulario de inicio de sesión ADMIN-->
+        <div class="modal-body">
+          <form action="admin.html">
+            <div class="mb-3">
+              <label for="nombreRegistro" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="txtUsuario" required>
+            </div>
+            <div class="mb-3">
+              <label for="passwordLogin" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="txtPassword" required>
+            </div>
+            <button type="submit" class="btn btn-dark">Iniciar sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Footer -->
   <footer class="banner">
     <div class="banner-img"></div>
-    <div class="banner-content">
+    <div class="banner-content mt-5">
       <p class="mb-0 h3" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">GRUPO CERO -
         COOPERATIVA ARTÍSTICA</p>
       <p style="font-family: Verdana, Geneva, Tahoma, sans-serif;">TODOS LOS DERECHOS RESERVADOS @ 2024</p>
+    </div>
+    <div class="text-center">
+      <a href="#" class="btn btn-outline-danger mb-5" data-bs-toggle="modal" data-bs-target="#loginModalMembers">Acceso Miembros</a>
     </div>
   </footer>
   <!-- Fin del footer -->
