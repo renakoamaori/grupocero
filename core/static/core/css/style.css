@@ -19,8 +19,21 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
+}
   
-  footer {
-    margin-top: auto;
-  }  
+footer {
+margin-top: auto;
+}
+
+.modal-body svg {
+    width: 60px; /* Tamaño del ícono */
+    height: 60px;
+}
+
+.modal-body h4 {
+    margin-top: 1rem;
+}
+
+.modal-body .btn {
+    margin-top: 1rem;
+}

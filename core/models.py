@@ -1,3 +1,4 @@
+from django.utils import timezone
 import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
@@ -36,7 +37,7 @@ class Artista(models.Model):
     nombre = models.CharField(max_length=50)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     biografia = models.TextField(null=True, blank=True)
-    imagen = models.ImageField(upload_to=upload_to_artista, null=True, blank=True)
+    imagen = models.ImageField(upload_to=upload_to_artista, null=True, blank=True, max_length=255)
     sitio_web = models.URLField(null=True, blank=True)
     habilitado = models.BooleanField(default=True)
 
@@ -62,7 +63,7 @@ class TipoProducto(models.Model):
 class Producto(models.Model):
     titulo = models.CharField(max_length=80)
     descripcion = models.TextField(null=False, blank=False)
-    imagen = models.ImageField(upload_to=upload_to_producto, blank=False, null=False)
+    imagen = models.ImageField(upload_to=upload_to_producto, blank=False, null=False, max_length=255)
     artista = models.ForeignKey(Artista, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoProducto, on_delete=models.CASCADE)
     precio = models.IntegerField(default=0)
@@ -102,16 +103,18 @@ class TipoUsuario(models.Model):
         return self.nom_tipo
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self, username, email=None, password=None, tipo_usuario=None, **extra_fields):
+    def create_user(self, username, email, password=None, tipo_usuario=None, **extra_fields):
         if not username:
             raise ValueError('The Username field must be set')
+        if not email:
+            raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, tipo_usuario=tipo_usuario, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, username, email=None, password=None, tipo_usuario=None, **extra_fields):
+    def create_superuser(self, username, email, password=None, tipo_usuario=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         tipo_usuario, created = TipoUsuario.objects.get_or_create(nom_tipo='admin')
@@ -121,18 +124,18 @@ class UsuarioManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
         if tipo_usuario is None:
-            #raise ValueError('Superuser must have a tipo_usuario.')
-            print('Superuser must have a tipo_usuario.')
-            return
+            raise ValueError('Superuser must have a tipo_usuario.')
 
         extra_fields['tipo_usuario'] = tipo_usuario
 
         return self.create_user(username, email, password, **extra_fields)
     
 class Usuario(AbstractUser):
+    email = models.EmailField(_('email address'), unique=True, blank=False, null=False)
     tipo_usuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE)
 
     USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
 
     groups = models.ManyToManyField(
         Group,
@@ -182,7 +185,7 @@ class SolicitudP(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='E')
     nombre_producto = models.CharField(max_length=100)
     descripcion_producto = models.TextField()
-    imagen_producto = models.ImageField(blank=False, null=False, upload_to=upload_to_temp)
+    imagen_producto = models.ImageField(blank=False, null=False, upload_to=upload_to_temp, max_length=255)
     artista_producto = models.ForeignKey(Artista, on_delete=models.CASCADE, default=None)
     tipo_producto = models.CharField(max_length=20, choices=TipoProducto.TIPO_CHOICES)
     precio_producto = models.IntegerField(default=0)
@@ -202,7 +205,7 @@ class SolicitudA(models.Model):
     nombre_artista = models.CharField(max_length=50)
     fecha_nacimiento_artista = models.DateField(null=True, blank=True)
     biografia_artista = models.TextField(null=True, blank=True)
-    imagen_artista = models.ImageField(null=True, blank=True, upload_to=upload_to_temp)
+    imagen_artista = models.ImageField(null=True, blank=True, upload_to=upload_to_temp, max_length=255)
     sitio_web_artista = models.URLField(null=True, blank=True)
 
     def __str__(self):
@@ -219,9 +222,26 @@ class SolicitudesRechazadas(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Rechazo #{self.pk} - Solicitud #{self.solicitud.pk}"
+        if self.solicitudA:
+            return f"Rechazo #{self.pk} - SolicitudA #{self.solicitudA.pk}"
+        elif self.solicitudP:
+            return f"Rechazo #{self.pk} - SolicitudP #{self.solicitudP.pk}"
+        else:
+            return f"Rechazo #{self.pk} - Sin solicitud relacionada"
     
 
 class Carrito(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+class historial_compra(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    fecha_compra = models.DateField(default=timezone.now)
+    metodo_pago = models.CharField(max_length=20)
+    total_clp = models.CharField(max_length=10)
+    total_usd = models.CharField(max_length=10)
+    productos = models.ManyToManyField(Producto)
+    cantidades_productos = models.JSONField(default=dict)
+
+    def str(self):
+        return f"Pago de {self.usuario.username} el {self.fecha_compra}"

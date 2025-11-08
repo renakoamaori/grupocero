@@ -7,15 +7,6 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            {%if imagen_banner is not None%}
-            <img src="{{ imagen_banner }}" alt="{{este_artista.nombre}}'s banner" class="d-block w-100">
-            {%endif%}
-        </div>
-    </div>
-</div>
 <section>
     <div class="card">
         <div class="card-body d-flex">
@@ -29,23 +20,7 @@
         </div>
     </div>
 </section>
-<div class="container d-flex justify-content-center">
-    <section class="my-auto">
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.tags == "success" %}
-                    <div class="alert alert-success text-center" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif message.tags == "error" %}
-                    <div class="alert alert-danger text-center" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    </section>
-</div>
+
 <div class="container">  
     <!-- Aquí va el código para mostrar los productos -->
     <div id="sencillos">

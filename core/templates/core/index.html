@@ -150,23 +150,6 @@
     <!-- Fin del modal foto 3-->
     <!--Fin del modal carrusel-->
 {% block albums %}
-<div class="container d-flex justify-content-center">
-    <section class="my-auto">
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.tags == "success" %}
-                    <div class="alert alert-success text-center" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif message.tags == "error" %}
-                    <div class="alert alert-danger text-center" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    </section>
-</div>
 <!--INICIO ALBUMS-->
 <section class="py-5 text-center container">
     <div class="row py-lg-5">

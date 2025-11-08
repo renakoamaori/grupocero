@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import cloudinary_storage
 
 #MEDIA CONFIG
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +36,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 
 
 # Application definition
@@ -39,6 +44,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'admin_interface',
     'colorfield',
+    'admin_confirm',
+    'libs.multi_captcha_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,12 +55,19 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'core',
+    'rest_framework',
+    'captcha',
+    'django_recaptcha',
+    'snowpenguin.django.recaptcha3',
+    'axes',
+    'cloudinary_storage',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,7 +75,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-]
+    'axes.middleware.AxesMiddleware',
+    ]
 
 ROOT_URLCONF = 'musica.urls'
 
@@ -84,6 +99,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'musica.wsgi.application'
 
+#RECAPTCHA
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_DEFAULT_ACTION = 'generic'
+RECAPTCHA_SCORE_THRESHOLD = 0.5
+RECAPTCHA_LANGUAGE = 'es'
+
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -99,6 +122,17 @@ DATABASES = {
     }
 }
 
+
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AXES_FAILURE_LIMIT = 3 # INTENTOS
+AXES_COOLOFF_TIME = timedelta(minutes=1)
+AXES_LOCKOUT_URL = '/locked/'
+AXES_RESET_ON_SUCCES = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -137,6 +171,12 @@ DATE_INPUT_FORMATS = ('%d/%m/%Y','%d-%m-%Y','%Y-%m-%d')
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'core', 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
+STATICFILES_STORAGES = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -153,3 +193,42 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #CONFIGURACIÓN DEL LOGIN Y LOGOUT
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+#RECUPERAR CONTRASEÑA
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', os.getenv('EMAIL_HOST_USER'))
+
+#API LASTFM:
+
+LASTFM_API_KEY = os.getenv('LASTFM_API_KEY')
+
+
+#CONFIG MULTICAPTCHA
+MULTI_CAPTCHA_ADMIN = {
+    'engine': 'recaptcha',
+}
+
+# CACHE
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
+#CLOUDINARY
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET')
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+#PAYPAL
+PAYPAL_SANDBOX_CLIENT_ID = os.getenv('PAYPAL_SANDBOX_CLIENT_ID')

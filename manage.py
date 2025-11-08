@@ -7,6 +7,7 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'musica.settings')
+    os.environ['CRYPTOGRAPHY_OPENSSL_NO_LEGACY'] = '1'
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -3,8 +3,13 @@ from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from captcha.fields import CaptchaField
+from django_recaptcha.fields import ReCaptchaField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 class ArtistaForm(forms.ModelForm):
+    captcha = CaptchaField()
+
     class Meta:
         model = Artista
         fields = '__all__'
@@ -13,6 +18,8 @@ class ArtistaForm(forms.ModelForm):
         }
 
 class ProductoForm(forms.ModelForm):
+    captcha = ReCaptchaField()
+
     tipo = forms.ModelChoiceField(queryset=TipoProducto.objects.all())
     def __init__(self, *args, **kwargs):
         super(ProductoForm, self).__init__(*args, **kwargs)
@@ -24,11 +31,36 @@ class ProductoForm(forms.ModelForm):
         fields = '__all__'
 
 class UsuarioForm(forms.ModelForm):
+    password = ReadOnlyPasswordHashField(
+        label="Password",
+        help_text=(
+            "Las contraseñas no son visibles aquí. "
+            "Puede cambiar la contraseña usando "
+            "<a href=\"../password/\">este formulario</a>."
+        ),
+    )
+
     class Meta:
         model = Usuario
         fields = '__all__'
 
+    def clean_password(self):
+        return self.initial["password"]
+
+class UsuarioCreationForm(UserCreationForm):
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'tipo_usuario')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
+
 class SolicitudPForm(forms.ModelForm):
+    captcha = CaptchaField()
     class Meta:
         model = SolicitudP
         fields = ['nombre_producto', 'descripcion_producto', 'imagen_producto', 'tipo_producto', 'precio_producto', 'artista_producto']
@@ -47,11 +79,12 @@ class SolicitudPForm(forms.ModelForm):
         return instance
 
 class SolicitudAForm(forms.ModelForm):
+    captcha = CaptchaField()
     class Meta:
         model = SolicitudA
         fields = ['nombre_artista', 'fecha_nacimiento_artista', 'biografia_artista', 'imagen_artista', 'sitio_web_artista',]
         widgets = {
-            'fecha_nacimiento_artista': forms.DateInput(format='%d//%m//%Y', attrs={'type': 'date'}),
+            'fecha_nacimiento_artista': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
             'imagen_artista': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
 
@@ -59,6 +92,7 @@ class SolicitudAForm(forms.ModelForm):
         super(SolicitudAForm, self).__init__(*args, **kwargs)
 
 class SolicitudesRechazadasAForm(forms.ModelForm):
+    captcha = ReCaptchaField()
     solicitud_tipo = forms.CharField(initial='A', widget=forms.HiddenInput())
 
     class Meta:
@@ -76,6 +110,7 @@ class SolicitudesRechazadasAForm(forms.ModelForm):
         self.fields['solicitudA'].widget.choices = [(solicitud_actual, solicitud_actual)]
 
 class SolicitudesRechazadasPForm(forms.ModelForm):
+    captcha = CaptchaField()
     solicitud_tipo = forms.CharField(initial='B', widget=forms.HiddenInput())
 
     class Meta:
@@ -93,14 +128,17 @@ class SolicitudesRechazadasPForm(forms.ModelForm):
         self.fields['solicitudP'].widget.choices = [(solicitud_actual, solicitud_actual)]
 
 class AprobarSolicitudForm(forms.Form):
+    captcha = ReCaptchaField()
     solicitud_id = forms.IntegerField(widget=forms.HiddenInput())
 
 class registerForm(UserCreationForm):
+    captcha = CaptchaField()
     class Meta:
         model = Usuario
-        fields = ['username', 'first_name' , 'last_name', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2']
 
 class MiembroForm(forms.ModelForm):
+    captcha = ReCaptchaField()
     usuario = forms.ModelChoiceField(queryset=Usuario.objects.all(), disabled=True)
     password = forms.CharField(
         label="Actualizar Contraseña", 

@@ -1,4 +1,3 @@
-import asyncio
 import shutil
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.base import ContentFile
@@ -13,59 +12,19 @@ from django.core.paginator import Paginator
 from PIL import Image, ImageOps
 import re
 from django.conf import settings
-
-def create_horizontal_image(input_image_path, output_image_path, target_width=1800, target_height=400):
-    try:
-        # Load input image
-        im = Image.open(input_image_path)
-
-        # If the image is RGBA, convert it to RGB
-        if im.mode == 'RGBA':
-            im = im.convert('RGB')
-
-        # Resize input image while keeping aspect ratio
-        ratio = target_height / im.height
-        im_resized = im.resize((int(im.width * ratio), target_height))
-
-        # Border parameters
-        fill_color = (255, 255, 255)
-        border_l = int((target_width - im_resized.width) / 2)
-
-        # Use ImageOps.expand()
-        border_r = target_width - im_resized.width - border_l
-        im_horizontal = ImageOps.expand(im_resized, (border_l, 0, border_r, 0), fill_color)
-        im_horizontal.save(output_image_path)
-    except Exception as e:
-        print(f"Error al crear la imagen horizontal: {e}")
-
-def procesar_imagen(imagen, este_artista):
-    try:
-        nombre_limpio = re.sub(r'\W+', '', este_artista.nombre, flags=re.UNICODE)
-        output_image_path = os.path.join(settings.MEDIA_ROOT, 'artistas', nombre_limpio, f'{nombre_limpio}_h.jpg')
-        if not os.path.exists(output_image_path):
-            create_horizontal_image(imagen.path, output_image_path)
-
-        # Genera la ruta relativa
-        imagen_banner = settings.MEDIA_URL + os.path.relpath(output_image_path, start=settings.MEDIA_ROOT)
-
-        return imagen_banner
-    except Exception as e:
-        print(f"Error al procesar la imagen: {e}")
-        return None
-
-def obtener_imagen(lista):
-    if lista and lista[0].imagen:
-        return lista[0].imagen
-    return None
-
-def procesar_listas(s, a, e, este_artista):
-    for lista in [s, a, e]:
-        imagen = obtener_imagen(lista)
-        if imagen:
-            return procesar_imagen(imagen, este_artista)
-
-    # Si ninguna de las listas tiene una imagen, procesar la imagen del artista
-    return procesar_imagen(este_artista.imagen, este_artista)
+from .utils import *
+from .serializers import *
+from rest_framework import viewsets
+from rest_framework.renderers import JSONRenderer
+from django.contrib.auth.decorators import login_required
+import json
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from .decorators import usuario_de_tipo
+import asyncio
+import cloudinary.uploader
+from io import BytesIO
 
 def get_artistaysusproductoshabilitados(artista_id):
     aux = {}
@@ -95,10 +54,6 @@ def get_artistaysusproductoshabilitados(artista_id):
         aux['productos_eps'] = e
     except TipoProducto.DoesNotExist:
         pass
-
-    if 'productos_sencillos' in aux or 'productos_albums' in aux or 'productos_eps' in aux:
-        imagen_banner = procesar_listas(s, a, e, este_artista)
-        aux['imagen_banner'] = imagen_banner
 
     return aux
 
@@ -138,6 +93,31 @@ def get_info_modals():
         'modal_akari': modal_akari,
         'modal_tomori': modal_tomori
     }
+
+#VIEWSETS
+class ArtistaViewSet(viewsets.ModelViewSet):
+    queryset = Artista.objects.all().order_by('pk')
+    serializer_class = ArtistaSerializer
+    renderer_classes = [JSONRenderer]
+
+class ProductoViewSet(viewsets.ModelViewSet):
+    queryset = Producto.objects.all().order_by('pk')
+    serializer_class = ProductoSerializer
+    renderer_classes = [JSONRenderer]
+
+#API LAST_FM
+def lastfm_api(request):
+    # Obtener la lista de artistas japoneses
+    lastfm_api = get_japanese_artists()
+    
+    # Configurar la paginación
+    paginator = Paginator(lastfm_api, 5)  # Mostrar 5 artistas por página
+    page_number = request.GET.get('page')  # Obtener el número de página de la solicitud GET
+    page_obj = paginator.get_page(page_number)  # Obtener el objeto de la página actual
+    
+    # Pasar el objeto de la página al template
+    return render(request, 'core/apis/artista/artistas_api.html', {'page_obj': page_obj})
+
 #VISTAS GENERALES:
 def index(request):
     try:
@@ -164,8 +144,8 @@ def register(request):
             group, created = Group.objects.get_or_create(name='comun')
             user.groups.add(group)
             user.save()
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
-            login(request, user)
+            #user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            #login(request, user)
             return redirect('index')
         else:
             aux['form'] = form
@@ -190,14 +170,21 @@ def about(request):
     return render(request, 'core/about.html')
 def carrito(request):
     messages.get_messages(request).used = True
+    
+    # Prepara el contexto inicial, incluyendo la clave de PayPal
+    context = {
+        'paypal_client_id': settings.PAYPAL_SANDBOX_CLIENT_ID
+    }
+
     if request.user.is_authenticated:
-        aux = {
-            'carrito': Carrito.objects.filter(usuario=request.user)
-        }
+        # Si el usuario está autenticado, añade el carrito al contexto
+        context['carrito'] = Carrito.objects.filter(usuario=request.user)
     else:
+        # Si no, muestra un mensaje de error
         messages.error(request, '¡Por favor inicie sesión para comenzar a agregar productos al carrito!')
-        aux = None
-    return render(request, 'core/carrito.html', aux)
+        context['carrito'] = None # Asegúrate de pasar 'None' para que la plantilla pueda manejarlo
+
+    return render(request, 'core/carrito.html', context)
 def agregar_producto_carrito(request, producto_id):
     messages.get_messages(request).used = True
     if request.user.is_authenticated:
@@ -239,6 +226,12 @@ def cantidad_productos_carrito(request):
     else:
         contador = 0
     return contador
+@login_required
+def limpiar_carrito(request):
+    carrito = Carrito.objects.filter(usuario=request.user)
+    carrito.delete()
+    return redirect('carrito')
+
 def artista(request, artista_id):
     try:
         aux = get_artistaysusproductoshabilitados(artista_id)
@@ -246,10 +239,11 @@ def artista(request, artista_id):
         aux = None
     return render(request, 'core/artista.html', aux)
 #VISTAS DE MIEMBROS
+@usuario_de_tipo('miembro')
 def miembros(request):
     if request.user.is_authenticated:
         if request.user.tipo_usuario == 'comun':
-            return redirect('')
+            return redirect('index')
         if request.user.is_superuser or request.user.is_staff:
             return redirect('/admin/')
         solicitudA = SolicitudA.objects.filter(usuario=request.user)
@@ -264,10 +258,13 @@ def miembros(request):
         }
         return render(request, 'core/miembros/members.html', aux)
     else:
-        return redirect('')
+        return redirect('index')
 def solicitudP(request):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
     aux = {'form': SolicitudPForm()}
-    
+
     if request.method == 'POST':
         form = SolicitudPForm(request.POST, request.FILES)
         if form.is_valid():
@@ -281,15 +278,20 @@ def solicitudP(request):
                 image_file = request.FILES['imagen_producto']
                 solicitud.imagen_producto.save(image_file.name, ContentFile(image_file.read()), save=True)
 
-            aux['msj'] = "¡Solicitud enviada correctamente!"
+            messages.success(request, "¡Solicitud enviada correctamente!")
+            return redirect('miembros')
         else:
             aux['form'] = form
-            aux['msj'] = "¡El formulario no es valido!"
-            
+            messages.error(request, "¡El formulario no es válido!")
+
     return render(request, 'core/miembros/solicitudes/requestP.html', aux)
 def solicitudA(request):
-    aux = {'form': SolicitudAForm()}
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
     
+    aux = {'form': SolicitudAForm()}
+
     if request.method == 'POST':
         form = SolicitudAForm(request.POST, request.FILES)
         if form.is_valid():
@@ -303,24 +305,30 @@ def solicitudA(request):
                 image_file = request.FILES['imagen_artista']
                 solicitud.imagen_artista.save(image_file.name, ContentFile(image_file.read()), save=True)
 
-            aux['msj'] = "¡Solicitud enviada correctamente!"
+            messages.success(request, "¡Solicitud enviada correctamente!")
+            return redirect('miembros')
         else:
             aux['form'] = form
-            aux['msj'] = "¡El formulario no es valido!"
-            
+            messages.error(request, "¡El formulario no es válido!")
+
     return render(request, 'core/miembros/solicitudes/requestA.html', aux)
 def editar_solicitud_p(request, solicitud_id):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     solicitud = get_object_or_404(SolicitudP, pk=solicitud_id)
-    if solicitud.estado in('E', 'R'):
-        aux = {'form': SolicitudPForm(instance=solicitud)
-        }
+    
+    if solicitud.estado in ('E', 'R'):
+        aux = {'form': SolicitudPForm(instance=solicitud)}
 
         if request.method == 'POST':
             if 'imagen_producto' in request.FILES:
-                    if solicitud.imagen_producto:
-                        if os.path.isfile(solicitud.imagen_producto.path):
-                            os.remove(solicitud.imagen_producto.path)
-                            solicitud.imagen_producto.delete(save=False)
+                if solicitud.imagen_producto:
+                    if os.path.isfile(solicitud.imagen_producto.path):
+                        os.remove(solicitud.imagen_producto.path)
+                        solicitud.imagen_producto.delete(save=False)
+            
             form = SolicitudPForm(request.POST, request.FILES, instance=solicitud)
             if form.is_valid():
                 if solicitud.estado == 'R':
@@ -332,25 +340,35 @@ def editar_solicitud_p(request, solicitud_id):
                 else:
                     solicitud.save()
                     form.save()
-                aux['msj'] = "¡Solicitud actualizada correctamente!"
+                
+                # Mensaje de éxito
+                messages.success(request, "¡Solicitud actualizada correctamente!")
+                return redirect('miembros')
             else:
                 aux['form'] = form
-                aux['msj'] = "¡Error al actualizar su solicitud!"
+                # Mensaje de error
+                messages.error(request, "¡Error al actualizar su solicitud!")
     else:
         return redirect('miembros')
+
     return render(request, 'core/miembros/crud/updateP.html', aux)
 def editar_solicitud_a(request, solicitud_id):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     solicitud = get_object_or_404(SolicitudA, pk=solicitud_id)
-    if solicitud.estado in('E', 'R'):
-        aux = {'form': SolicitudAForm(instance=solicitud)
-        }
+    
+    if solicitud.estado in ('E', 'R'):
+        aux = {'form': SolicitudAForm(instance=solicitud)}
 
         if request.method == 'POST':
             if 'imagen_artista' in request.FILES:
-                    if solicitud.imagen_artista:
-                        if os.path.isfile(solicitud.imagen_artista.path):  # Verifica si el archivo existe en el sistema de archivos
-                            os.remove(solicitud.imagen_artista.path)
-                            solicitud.imagen_artista.delete(save=False)
+                if solicitud.imagen_artista:
+                    if os.path.isfile(solicitud.imagen_artista.path):  # Verifica si el archivo existe en el sistema de archivos
+                        os.remove(solicitud.imagen_artista.path)
+                        solicitud.imagen_artista.delete(save=False)
+            
             form = SolicitudAForm(request.POST, request.FILES, instance=solicitud)
             if form.is_valid():
                 if solicitud.estado == 'R':
@@ -362,15 +380,21 @@ def editar_solicitud_a(request, solicitud_id):
                 else:
                     solicitud.save()
                     form.save()
-                aux['msj'] = "¡Solicitud actualizada correctamente!"
+                
+                # Mensaje de éxito
+                messages.success(request, "¡Solicitud actualizada correctamente!")
+                return redirect('miembros')  # Redirigir a la vista que se desee después de una actualización exitosa
             else:
                 aux['form'] = form
-                aux['msj'] = "¡Error al actualizar su solicitud!"
+                # Mensaje de error
+                messages.error(request, "¡Error al actualizar su solicitud!")
     else:
         return redirect('miembros')
+
     return render(request, 'core/miembros/crud/updateA.html', aux)
 
 #VISTAS DE ADMINISTRADORES
+@usuario_de_tipo('admin')
 def administradores(request):
     if request.user.is_authenticated:
         if request.user.tipo_usuario.nom_tipo == 'comun' or request.user.tipo_usuario.nom_tipo == 'miembro':
@@ -388,8 +412,13 @@ def administradores(request):
     else:
         return redirect('index')
 def rechazar_solicitud_a(request, solicitud_id):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     solicitud = get_object_or_404(SolicitudA, pk=solicitud_id)
     aux = {'form': SolicitudesRechazadasAForm(initial={'solicitudA': solicitud})}
+    
     if request.method == 'POST':
         form = SolicitudesRechazadasAForm(request.POST, initial={'solicitudA': solicitud})
         if form.is_valid():
@@ -400,14 +429,24 @@ def rechazar_solicitud_a(request, solicitud_id):
             # Guardar la instancia en la base de datos
             solicitud_rechazada.save()
             solicitud.save()
-            aux['msj'] = "Solicitud rechazada correctamente."
+            
+            # Mensaje de éxito
+            messages.success(request, "Solicitud rechazada correctamente.")
             return redirect('administradores')
         else:
             aux['form'] = form
+            # Mensaje de error
+            messages.error(request, "Error al rechazar la solicitud. Verifique los datos ingresados.")
+
     return render(request, 'core/administradores/solicitudes/rechazarA.html', aux)
 def rechazar_solicitud_p(request, solicitud_id):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     solicitud = get_object_or_404(SolicitudP, pk=solicitud_id)
     aux = {'form': SolicitudesRechazadasPForm(initial={'solicitudP': solicitud})}
+    
     if request.method == 'POST':
         form = SolicitudesRechazadasPForm(request.POST, initial={'solicitudP': solicitud})
         if form.is_valid():
@@ -418,15 +457,24 @@ def rechazar_solicitud_p(request, solicitud_id):
             # Guardar la instancia en la base de datos
             solicitud_rechazada.save()
             solicitud.save()
-            aux['msj'] = "Solicitud rechazada correctamente."
+            
+            # Mensaje de éxito
+            messages.success(request, "Solicitud rechazada correctamente.")
             return redirect('administradores')
         else:
             aux['form'] = form
+            # Mensaje de error
+            messages.error(request, "Error al rechazar la solicitud. Verifique los datos ingresados.")
+    
     return render(request, 'core/administradores/solicitudes/rechazarP.html', aux)
 def aprobar_solicitud_a(request, solicitud_id):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     solicitud = get_object_or_404(SolicitudA, pk=solicitud_id)
     form = AprobarSolicitudForm(request.POST or None, initial={'solicitud_id': solicitud_id})
-    msj = ""  # Inicializa la variable del mensaje
+    
     if request.method == 'POST':
         if form.is_valid():
             solicitud.estado = 'A'
@@ -437,33 +485,41 @@ def aprobar_solicitud_a(request, solicitud_id):
                 sitio_web=solicitud.sitio_web_artista
             )
             artista.save()
+            
             # Copiar la imagen de la solicitud a la ubicación de almacenamiento de artistas
             if solicitud.imagen_artista:
                 nombre_archivo = os.path.basename(solicitud.imagen_artista.name)
                 ruta_artista = os.path.join('artistas', artista.nombre, nombre_archivo)
                 os.makedirs(os.path.dirname(ruta_artista), exist_ok=True)
+                
                 with open(solicitud.imagen_artista.path, 'rb') as origen, open(ruta_artista, 'wb') as destino:
                     shutil.copyfileobj(origen, destino)
+                
                 artista.imagen = ruta_artista
                 artista.save()
                 
                 # Eliminar archivo original en la ruta de origen
-                os.remove(solicitud.imagen_artista.path)  # <---- Aquí se elimina el archivo original
-                
+                os.remove(solicitud.imagen_artista.path)
                 solicitud.imagen_artista.delete()
-                
+            
             solicitud.save()
-            msj = "¡Solicitud aprobada y Artista agregado correctamente!"
+            # Mensaje de éxito
+            messages.success(request, "¡Solicitud aprobada y Artista agregado correctamente!")
             return redirect('administradores')
         else:
-            msj = "Hubo un problema al procesar el formulario."
-    return render(request, 'core/administradores/solicitudes/aprobarA.html', {'form': form, 'solicitud': solicitud, 'msj': msj})
+            # Mensaje de error
+            messages.error(request, "Hubo un problema al procesar el formulario.")
+    
+    return render(request, 'core/administradores/solicitudes/aprobarA.html', {'form': form, 'solicitud': solicitud})
 def aprobar_solicitud_p(request, solicitud_id):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     solicitud = get_object_or_404(SolicitudP, pk=solicitud_id)
     form = AprobarSolicitudForm(request.POST or None, initial={'solicitud_id': solicitud_id})
-    msj = ""  # Inicializa la variable del mensaje
+    
     if request.method == 'POST':
-        form = AprobarSolicitudForm(request.POST)
         if form.is_valid():
             solicitud.estado = 'A'
             tipo = get_object_or_404(TipoProducto, nom_tipo=solicitud.tipo_producto)
@@ -475,67 +531,116 @@ def aprobar_solicitud_p(request, solicitud_id):
                 precio=solicitud.precio_producto
             )
             producto.save()
+            
             if solicitud.imagen_producto:
                 nombre_archivo = os.path.basename(solicitud.imagen_producto.name)
                 ruta_producto = os.path.join('productos', producto.artista.nombre, producto.titulo, nombre_archivo)
                 os.makedirs(os.path.dirname(ruta_producto), exist_ok=True)
+                
                 with open(solicitud.imagen_producto.path, 'rb') as origen, open(ruta_producto, 'wb') as destino:
                     shutil.copyfileobj(origen, destino)
+                
                 producto.imagen = ruta_producto
                 producto.save()
+                
                 # Eliminar archivo original en la ruta de origen
-                os.remove(solicitud.imagen_producto.path)  # <---- Aquí se elimina el archivo original
+                os.remove(solicitud.imagen_producto.path)
                 solicitud.imagen_producto.delete()
+            
             solicitud.save()
+            
+            # Mensaje de éxito
             if producto.tipo.nom_tipo == "cancion":
-                msj = f"¡Solicitud aprobada y {producto.tipo.nom_tipo} agregada correctamente!"
+                messages.success(request, f"¡Solicitud aprobada y {producto.tipo.nom_tipo} agregada correctamente!")
             else:
-                msj = f"¡Solicitud aprobada y {producto.tipo.nom_tipo} agregado correctamente!"
+                messages.success(request, f"¡Solicitud aprobada y {producto.tipo.nom_tipo} agregado correctamente!")
+            
             return redirect('administradores')
         else:
-            msj = "Hubo un problema al procesar el formulario."
-    return render(request, 'core/administradores/solicitudes/aprobarP.html', {'form': form, 'solicitud': solicitud, 'msj': msj})
+            # Mensaje de error
+            messages.error(request, "Hubo un problema al procesar el formulario.")
+    
+    return render(request, 'core/administradores/solicitudes/aprobarP.html', {'form': form, 'solicitud': solicitud})
+@usuario_de_tipo('admin')
 def agregar_artista(request):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     aux = {'form': ArtistaForm()}
-
+    
     if request.method == 'POST':
         form = ArtistaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            aux['msj'] = "¡Artista agregado con éxito!"
+            # Mensaje de éxito
+            messages.success(request, "¡Artista agregado con éxito!")
+            return redirect('administradores')
         else:
             aux['form'] = form
-            aux['msj'] = "¡El formulario no es valido!"
+            # Mensaje de error
+            messages.error(request, "¡El formulario no es válido!")
+    
     return render(request, 'core/administradores/crud/addA.html', aux)
 def editar_artista(request, artista_id):
     artista = get_object_or_404(Artista, pk=artista_id)
     aux = {
         'form': ArtistaForm(instance=artista)
     }
+
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+
     if request.method == 'POST':
-        if 'imagen' in request.FILES:
-            if artista.imagen:
-                if os.path.isfile(artista.imagen.path):
-                    os.remove(artista.imagen.path)
-                    artista.imagen.delete(save=False)
         form = ArtistaForm(request.POST, request.FILES, instance=artista)
         if form.is_valid():
+            # Obtener la instancia del formulario antes de guardar
+            old_artista = form.save(commit=False)
+
+            if old_artista.imagen and artista.imagen and old_artista.imagen != artista.imagen:
+                # Si se ha cambiado la imagen y existe una imagen antigua
+                if artista.imagen.name:
+                    # Obtener el public_id de Cloudinary a partir de la URL de la imagen
+                    # La URL de Cloudinary tiene el formato: https://res.cloudinary.com/<cloud_name>/image/upload/<public_id>/<file_name>
+                    image_url = artista.imagen.url
+                    public_id = image_url.split('/v1/media/')[1].split('/')[1].split('.')[0]
+                    cloudinary.uploader.destroy(public_id, resource_type='image')
+
+            # Guardar los cambios
             form.save()
-            aux['msj'] = "¡Artista actualizado correctamente!"
-            return redirect('administradores')
+            # Mensaje de éxito
+            messages.success(request, "¡Artista actualizado correctamente!")
+            return redirect('administradores')  # Redirigir a la página de administradores o donde corresponda
         else:
             aux['form'] = form
-            aux['msj'] = "¡El formulario no es valido!"
+            # Mensaje de error
+            messages.error(request, "¡El formulario no es válido!")
+
     return render(request, 'core/administradores/crud/updateA.html', aux)
 def quitar_imagen_artista(request, artista_id):
     artista = get_object_or_404(Artista, pk=artista_id)
     if artista.imagen:
-                if os.path.isfile(artista.imagen.path):
-                    os.remove(artista.imagen.path)
-                    artista.imagen.delete(save=False)
-                    artista.save()
-                    messages.success(request, 'La imágen fue eliminada correctamente.')
-                    return redirect('administradores')
+        if artista.imagen.name:
+            # Obtener el public_id de Cloudinary a partir de la URL de la imagen
+            image_url = artista.imagen.url
+            public_id = image_url.split('/v1/media/')[1].split('/')[1].split('.')[0]
+            
+            # Eliminar la imagen en Cloudinary
+            cloudinary.uploader.destroy(public_id, resource_type='image')
+
+            # Eliminar la imagen del modelo
+            artista.imagen.delete(save=False)
+            artista.save()
+
+            messages.success(request, 'La imagen fue eliminada correctamente.')
+        else:
+            messages.error(request, 'La imagen no se encuentra en Cloudinary.')
+    else:
+        messages.error(request, 'No hay imagen para eliminar.')
+
+    return redirect('administradores')
+@usuario_de_tipo('admin')
 def eliminar_artista(request, artista_id):
     artista = Artista.objects.get(pk=artista_id)
     artista.delete()
@@ -558,41 +663,72 @@ def enable_or_disable_artista(request, artista_id):
         'habilitado': artista.habilitado
     }
     return JsonResponse(data)
+@usuario_de_tipo('admin')
 def agregar_producto(request):
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+
+    # Crea tipos de productos si no existen
     if not TipoProducto.objects.exists():
         tipos = ['cancion', 'album', 'ep']  # Reemplaza esto con tus tipos de productos
         for tipo in tipos:
             TipoProducto.objects.create(nom_tipo=tipo)
+    
     aux = {'form': ProductoForm()}
 
     if request.method == 'POST':
         form = ProductoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            aux['msj'] = "¡Producto agregado con éxito!"
+            # Mensaje de éxito
+            messages.success(request, "¡Producto agregado con éxito!")
+            return redirect('administradores')
         else:
             aux['form'] = form
-            aux['msj'] = "¡El formulario no es valido!"
+            # Mensaje de error
+            messages.error(request, "¡El formulario no es válido!")
+
     return render(request, 'core/administradores/crud/addP.html', aux)
 def editar_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)
+
+    # Limpia los mensajes después de haber sido mostrados
+    storage = messages.get_messages(request)
+    storage.used = True
+
     aux = {
         'form': ProductoForm(instance=producto)
     }
+
     if request.method == 'POST':
-        if 'imagen' in request.FILES:
-            if producto.imagen:
-                if os.path.isfile(producto.imagen.path):
-                    os.remove(producto.imagen.path)
-                    producto.imagen.delete(save=False)
         form = ProductoForm(request.POST, request.FILES, instance=producto)
         if form.is_valid():
+            # Obtener la instancia del formulario antes de guardar
+            old_producto = form.save(commit=False)
+
+            if old_producto.imagen and producto.imagen and old_producto.imagen != producto.imagen:
+                # Si se ha cambiado la imagen y existe una imagen antigua
+                if producto.imagen.name:
+                    # Obtener el public_id de Cloudinary a partir de la URL de la imagen
+                    image_url = producto.imagen.url
+                    public_id = image_url.split('/v1/media/')[1].split('/')[1].split('.')[0]
+                    
+                    # Eliminar la imagen en Cloudinary
+                    cloudinary.uploader.destroy(public_id, resource_type='image')
+
+            # Guardar los cambios
             form.save()
-            aux['msj'] = "¡Producto actualizado correctamente!"
+            # Mensaje de éxito
+            messages.success(request, "¡Producto actualizado correctamente!")
+            return redirect('administradores')  # Redirigir a la página de administradores o donde corresponda
         else:
             aux['form'] = form
-            aux['msj'] = "¡El formulario no es valido!"
+            # Mensaje de error
+            messages.error(request, "¡El formulario no es válido!")
+
     return render(request, 'core/administradores/crud/updateP.html', aux)
+@usuario_de_tipo('admin')
 def eliminar_producto(request, producto_id):
     producto = Producto.objects.get(pk=producto_id)
     producto.delete()
@@ -615,15 +751,17 @@ def enable_or_disable_producto(request, producto_id):
         'habilitado': producto.habilitado
     }
     return JsonResponse(data)
+@usuario_de_tipo('admin')
 def listar_para_administradores(request):
     messages.get_messages(request).used = True
     tipo = get_object_or_404(TipoUsuario, nom_tipo='miembro')
     aux = {
-        'artistas': Artista.objects.all(),
-        'productos': Producto.objects.all(),
-        'miembros': Usuario.objects.filter(tipo_usuario=tipo)
+        'artistas': Artista.objects.all().order_by('pk'),
+        'productos': Producto.objects.all().order_by('pk'),
+        'miembros': Usuario.objects.filter(tipo_usuario=tipo).order_by('pk')
     }
     return render(request, 'core/administradores/crud/list.html', aux)
+@usuario_de_tipo('admin')
 def agregar_miembro(request):
     storage = messages.get_messages(request)
     storage.used = True
@@ -666,6 +804,7 @@ def editar_miembro(request, miembro_id):
             messages.error(request, 'El form no es valido!')
             #aux['msj'] = "¡La contraseña no es valida!"
     return render(request, 'core/administradores/crud/updateM.html', aux)
+@usuario_de_tipo('admin')
 def eliminar_miembro(request, miembro_id):
     storage = messages.get_messages(request)
     storage.used = True
@@ -695,3 +834,137 @@ def enable_or_disable_miembro(request, miembro_id):
         'habilitado': miembro.is_active
     }
     return JsonResponse(data)
+
+
+#HISTORIAL COMPRA
+@login_required(login_url='/accounts/login/')
+@usuario_de_tipo('comun', 'miembro')
+def historialcompra(request):
+    compras = historial_compra.objects.filter(usuario=request.user).order_by('-pk')
+
+    # Preparar datos de productos con cantidades para cada compra
+    compras_con_productos = []
+    for compra in compras:
+        productos_con_cantidades = []
+        for producto_id, cantidad in compra.cantidades_productos.items():
+            producto = compra.productos.get(pk=int(producto_id))  # Obtener el producto por su ID
+            productos_con_cantidades.append({
+                'producto': producto,
+                'cantidad': cantidad
+            })
+        
+        compras_con_productos.append({
+            'compra': compra,
+            'productos_con_cantidades': productos_con_cantidades
+        })
+
+    context = {
+        'compras_con_productos': compras_con_productos
+    }
+
+    return render(request, 'core/compras.html', context)
+
+def registrar_compra(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        # Validación de datos
+        metodo_pago = data.get('metodo_pago')
+        total_clp = data.get('total_clp')
+        total_usd = data.get('total_usd')
+        productos = data.get('productos')  # Lista de IDs de productos
+        cantidades_productos = data.get('cantidades')  # Cantidades de productos
+
+        print(metodo_pago)
+        print()
+        print(total_clp)
+        print()
+        print(total_usd)
+        print()
+        print(productos)
+        print()
+        print(cantidades_productos)
+
+        if not metodo_pago or not total_clp or not total_usd or not productos or not cantidades_productos:
+            return JsonResponse({'error': 'Datos incompletos'}, status=400)
+
+        try:
+            # Creación del historial de compra
+            compra = historial_compra.objects.create(
+                usuario=request.user,  # Asume que tienes un usuario autenticado
+                metodo_pago=metodo_pago,
+                total_clp=total_clp,
+                total_usd=total_usd,
+            )
+
+            # Asignación de productos y cantidades
+            for item in cantidades_productos:
+                producto_id = item['id']
+                cantidad = item['cantidad']
+                producto = Producto.objects.get(pk=producto_id)
+                compra.productos.add(producto)
+                compra.cantidades_productos[str(producto_id)] = cantidad
+
+            compra.save()
+
+            # Respuesta exitosa
+            return JsonResponse({'message': 'Compra registrada exitosamente'}, status=201)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    # Método no permitido para otras solicitudes
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def link_callback(uri, rel):
+    sUrl = settings.STATIC_URL
+    sRoot = settings.STATIC_ROOT
+    mUrl = settings.MEDIA_URL
+    mRoot = settings.MEDIA_ROOT
+
+    # Check if the uri is a static file
+    if uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    # Check if the uri is a media file
+    elif uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    else:
+        return uri  # Handle the case where the uri doesn't match static or media
+
+    # Check if the file exists
+    if not os.path.isfile(path):
+        raise Exception('File not found: {}'.format(path))
+    
+    return path
+
+def generar_voucher(request, compra_id):
+    compra = get_object_or_404(historial_compra, id=compra_id, usuario=request.user)
+    productos_con_cantidades = []
+    for producto_id, cantidad in compra.cantidades_productos.items():
+        producto = compra.productos.get(pk=producto_id)
+        productos_con_cantidades.append({'producto': producto, 'cantidad': cantidad})
+    
+    context = {
+        'compra': compra,
+        'productos_con_cantidades': productos_con_cantidades,
+    }
+
+    template_path = 'core/voucherpdf.html'
+    template = get_template(template_path)
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="voucher_compra_{compra.pk}.pdf"'
+
+    pisa_status = pisa.CreatePDF(
+        html, dest=response, link_callback=link_callback
+    )
+
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF: %s' % pisa_status.err, status=500)
+    
+    return response
+
+#AXES
+def locked(request):
+    return render(request, 'registration/locked.html')

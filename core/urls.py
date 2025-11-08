@@ -1,5 +1,11 @@
-from django.urls import path
+from django.urls import include, path
 from .views import *
+from rest_framework import routers
+
+#URL APIS
+router = routers.DefaultRouter()
+router.register('artista', ArtistaViewSet)
+router.register('producto', ProductoViewSet)
 
 urlpatterns = [
     path('', index, name="index"),
@@ -11,6 +17,10 @@ urlpatterns = [
     path('carrito/add/<int:producto_id>/', agregar_producto_carrito, name="carritoadd"),
     path('carrito/contadordeproductos/', cantidad_productos_carrito, name="carritocontador"),
     path('carrito/delete/<int:producto_id>/', eliminar_producto_carrito, name="carritodelete"),
+    path('limpiar_carrito/', limpiar_carrito, name='limpiar_carrito'),
+    path('compras/', historialcompra, name="historial_compra"),
+    path('registrar_compra/', registrar_compra, name="registrar_compra"),
+    path('generar_voucher/<int:compra_id>/', generar_voucher, name='generar_voucher'),
     path('miembros/', miembros, name="miembros"),
     path('artista/<int:artista_id>/', artista, name="artista"),
     path('solicitud/productos/', solicitudP, name="solicitudP"),
@@ -36,4 +46,10 @@ urlpatterns = [
     path('administradores/enable_or_disable_artista/<int:artista_id>/', enable_or_disable_artista, name="enable_or_disable_artista"),
     path('administradores/enable_or_disable_producto/<int:producto_id>/', enable_or_disable_producto, name="enable_or_disable_producto"),
     path('administradores/enable_or_disable_miembro/<int:miembro_id>/', enable_or_disable_miembro, name="enable_or_disable_miembro"),
+    #APIS
+    path('api/', include(router.urls)),
+    #API LAST_FM
+    path('lastfm_api/', lastfm_api, name="lastfm_api"),
+    #ACCOUNT LOCKED
+    path('locked/', locked, name="locked"),
 ]

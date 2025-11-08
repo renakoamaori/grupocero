@@ -49,14 +49,14 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         })
         .then(data => {
-            console.log(data.message);
+            //console.log(data.message);
             var boton = document.querySelector(`button[data-id="${id}"][class*="toggle-${tipo}"]`);
             boton.classList.toggle('btn-success');
             boton.classList.toggle('btn-danger');
             boton.textContent = data.habilitado ? 'Habilitado' : 'Deshabilitado';
         })
         .catch(error => {
-            console.error('Error:', error);
+            //console.error('Error:', error);
         });
     }
 
@@ -143,24 +143,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Ocultar mensajes después de 3 segundos
-    var mensajes = document.querySelectorAll('.alert');
-    if (mensajes) {
-        setTimeout(function() {
-            mensajes.forEach(function(mensaje) {
-                mensaje.style.display = 'none';
-            });
-        }, 3000);
-    }
-
     // Obtén el botón y el elemento HTML
     var themeButton = document.getElementById('themeButton');
-    console.log("themeButton:", themeButton); // Log para depuración
+    //console.log("themeButton:", themeButton); // Log para depuración
     var htmlTag = document.getElementsByTagName('html')[0];
 
     // Comprueba si ya hay un tema guardado en las cookies
     var theme = getCookie('theme');
-    console.log("Tema actual desde cookie:", theme); // Log para depuración
+    //console.log("Tema actual desde cookie:", theme); // Log para depuración
     if (theme) {
         htmlTag.setAttribute('data-bs-theme', theme);
     } else {
@@ -173,11 +163,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Cambia el tema cuando se hace clic en el botón
     themeButton.onclick = function() {
-        console.log("Botón de cambio de tema clicado"); // Log para depuración
+        //console.log("Botón de cambio de tema clicado"); // Log para depuración
         var currentTheme = htmlTag.getAttribute('data-bs-theme');
         var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         htmlTag.setAttribute('data-bs-theme', newTheme);
         setCookie('theme', newTheme, 365);
-        console.log("Nuevo tema establecido:", newTheme); // Log para depuración
+        //console.log("Nuevo tema establecido:", newTheme); // Log para depuración
     }
 });
