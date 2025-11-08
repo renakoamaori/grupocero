@@ -1,473 +1,907 @@
 <!DOCTYPE html>
 <html lang="es-CL">
-<!--INICIO HEAD-->
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grupo Cero - Cooperativa Artística</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" /> <!--Estilo personalizado-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo Cero - Inicio</title>
+    <!--Bootstrap 5 css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Bootstrap 5 Iconos-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!--CSS Custom-->
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<!--FINAL HEAD-->
-<!--INICIO BODY-->
 
 <body>
-  <!-- Inicio menú con logo -->
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <div class="container-fluid">
-      <!-- Logo al principio -->
-      <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 40px" alt="Logo GC"
-          class="rounded-pill" /></a>
+    <!--Inicio navbar-->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <!-- Botón para el menú vertical solo visible en pantallas grandes -->
+            <div class="d-none d-lg-block">
+                <button class="btn me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuVertical"
+                    aria-controls="menuVertical">
+                    <h4><i class="bi bi-three-dots-vertical"></i></h4>
+                </button>
+            </div>
+            <!-- Fin del botón para el menú vertical -->
 
-      <!-- Botón de colapsable -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+            <!-- Botón para el menú colapsable visible en dispositivos móviles -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Fin del botón para el menú colapsable -->
 
-      <!-- Contenido del menú -->
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <!-- Sección "Mi cuenta" al lado del logo -->
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Bienvenido,
-              usuario.</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="index.html">Cerrar Sesión</a>
-              </li>
-            </ul>
-          </li>
-          <!--DROPDOWN PARA LOS PRODUCTOS-->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Productos
+            <a class="navbar-brand d-flex w-50 me-auto" href="#"><img class="rounded-pill"
+                src="img/main_logo.jpg" alt="LOGO" style="width: 50px;"></a>
+
+            <!-- Link con el logo de la cooperativa -->
+
+            <div class="collapse navbar-collapse w-100" id="navbarNavDropdown">
+                <div class="navbar-nav w-100 justify-content-center">
+                    <!--Cuadro de búsqueda-->
+                    <form class="d-flex me-5 w-100">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="bi bi-search"></i> <!-- Icono de búsqueda -->
+                        </button>
+                    </form>
+                </div>
+                <!--Link al login-->
+                <ul class="navbar-nav w-100 justify-content-end ms-auto">
+                    <!-- Enlaces del menú vertical duplicados en el menú colapsable -->
+                    <li class="nav-item dropdown d-lg-none">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Menú</a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="products_logged.html">Productos</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="gallery_logged.html">Galería</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="about_logged.html">Acerca de</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Fin de los enlaces duplicados -->
+
+                    <li class="nav-item dropdown mt-3 me-auto">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Bienvenido, usuario</a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="index.html">Cerrar sesión</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item mt-3 d-flex">
+                        <p class="navbar-text">Cantidad de productos: <span id="product-count">3</span></p>
+                        <a class="btn" href="carrito.html">
+                            <h4>
+                                <i class="bi bi-cart"></i>
+                            </h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menú vertical -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="menuVertical" aria-labelledby="menuVerticalLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="menuVerticalLabel">Menú vertical</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body text-center ms-auto me-auto d-lg-block">
+            <!-- Elementos del menú vertical -->
+            <a class="nav-link linkcustom my-4 btn" href="#" role="button">
+                <h5><i class="bi bi-house"> Inicio </i></h5>
             </a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-submenu">
-                <a class="dropdown-item" href="#">Categorías<span class="float-end custom-toggle-arrow">&#187</span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="products_logged.html#arte">Arte</a></li>
-                  <li><a class="dropdown-item" href="products_logged.html#pintura">Pintura</a></li>
-                </ul>
-              </li>
-              <!--Submenu artistas-->
-              <li class="dropdown-submenu">
-                <a class="dropdown-item" href="#"> Artistas <span class="float-end custom-toggle-arrow">&#187</span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="products_logged.html#artista">Artista 1</a></li>
-                  <li><a class="dropdown-item" href="products_logged.html#artista">Artista 2</a></li>
-                </ul>
-              </li>
-              <a href="products_logged.html" class="dropdown-item">Ver todos</a>
-            </ul>
-          </li>
-          <!--FIN DROPDOWN-->
-          <li class="nav-item">
-            <a class="nav-link" href="gallery_logged.html">Galería de imágenes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about_logged.html">Acerca de</a>
-          </li>
-        </ul>
-
-        <!-- Contador centrado -->
-        <div class="mx-auto">
-          <p class="navbar-text">Cantidad de productos: <span id="product-count">0</span></p>
+            <a class="nav-link linkcustom my-4 btn" href="products_logged.html" role="button">
+                <h5><i class="bi bi-basket"> Productos </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="gallery_logged.html" role="button">
+                <h5><i class="bi bi-images"> Galería </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="about_logged.html" role="button">
+                <h5><i class="bi bi-info-circle"> Acerca de </i></h5>
+            </a>
         </div>
-
-        <!-- Barra de búsqueda al final a la derecha -->
-        <div class="ml-auto">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-6" style="width: 60vh;">
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Artista, tipo de arte o concepto."
-                    aria-label="Search" />
-                  <button class="btn btn-outline-danger" type="submit">
-                    Buscar
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </nav>
-  <!--FIN DEL MENU CON LOGO-->
-  <!-- INICIO CARRUSEL -->
-  <div id="demo" class="carousel slide" data-bs-ride="carousel">
+    <!-- Fin del menú vertical -->
+    <!--Final navbar-->
 
-    <!-- Indicators/dots -->
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-      <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-      <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-    </div>
 
-    <!-- The slideshow/carousel -->
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <a href="#"><img src="https://via.placeholder.com/1200x200" alt="foto1" class="d-block" style="width:100%"
-            data-bs-toggle="modal" data-bs-target="#modalfoto1"></a>
-      </div>
-      <div class="carousel-item">
-        <a href="#"><img src="https://via.placeholder.com/1200x200" alt="foto2" class="d-block" style="width:100%"
-            data-bs-toggle="modal" data-bs-target="#modalfoto2"></a>
-      </div>
-      <div class="carousel-item">
-        <a href="#"><img src="https://via.placeholder.com/1200x200" alt="foto3" class="d-block" style="width:100%"
-            data-bs-toggle="modal" data-bs-target="#modalfoto3"></a>
-      </div>
-    </div>
+    <!-- Carrusel -->
+    <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-    <!-- Left and right controls/icons -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
-  </div>
-  <!--FIN CARRUSEL-->
-  <!--INICIO SECCIÓN PRODUCTOS-->
-  <section class="bg-dark fixsection">
-    <div class="row justify-content-center m-5">
-      <h2 class="text-center my-5 text-white" style="font-family: Georgia, 'Times New Roman', Times, serif;">
-        <strong>PRODUCTOS</strong>
-      </h2>
-      <div class="col-md-4 col-sm-12 m-0">
-        <div class="card h-100 border-0 align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
-            style="width: 50%; height: auto;">
-          <div class="card-body text-center">
-            <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
-                aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
-                earum amet.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-12 m-0">
-        <div class="card h-100 border-0 mx-auto align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
-            style="width: 50%; height: auto;">
-          <div class="card-body text-center">
-            <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
-                aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
-                earum amet.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-12 m-0">
-        <div class="card h-100 border-0 mx-auto align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
-            style="width: 50%; height: auto;">
-          <div class="card-body text-center">
-            <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
-                aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
-                earum amet.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-12 m-0">
-        <div class="card h-100 border-0 mx-auto align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
-            style="width: 50%; height: auto;">
-          <div class="card-body text-center">
-            <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
-                aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
-                earum amet.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-12 m-0">
-        <div class="card h-100 border-0 mx-auto align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
-            style="width: 50%; height: auto;">
-          <div class="card-body text-center">
-            <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
-                aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
-                earum amet.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-12 m-0">
-        <div class="card h-100 border-0 mx-auto align-items-center mb-5 bg-dark text-light">
-          <img class="card-img-top img-fluid" src="https://via.placeholder.com/512x512" alt="Dropdead"
-            style="width: 50%; height: auto;">
-          <div class="card-body text-center">
-            <div class="p-3">
-              <h4 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nihil soluta ipsa iste earum culpa odit
-                aliquid pariatur, eligendi repudiandae porro laudantium in sed, reprehenderit voluptatum deleniti? Aut,
-                earum amet.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="text-center pt-0 pb-5">
-        <a href="products_logged.html#producto" class="btn btn-outline-danger">Ver más productos</a>
-      </div>
-    </div>
-  </section>
-  <!--FINAL SECCIÓN PRODUCTOS-->
-  <!-- Inicio modals para registro e inicio de sesión -->
-  <!--MODAL Registro-->
-  <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="registroModalLabel">Registro</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <!-- Formulario de registro -->
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="emailRegistro" class="form-label">Email</label>
-              <input type="email" class="form-control" id="txtEmail" required>
-            </div>
-            <div class="mb-3">
-              <label for="nombreRegistro" class="form-label">Usuario</label>
-              <input type="text" class="form-control" id="txtUsuario" required>
-            </div>
-            <div class="mb-3">
-              <label for="passwordRegistro" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" id="txtPassword" required>
-            </div>
-            <div class="mb-3">
-              <label for="passwordRegistroR" class="form-label">Confirmar contraseña</label>
-              <input type="password" class="form-control" id="txtPasswordR" required>
-            </div>
-            <button type="submit" class="btn btn-dark">Registrarse</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--MODAL Login-->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">Iniciar sesión</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <!-- Formulario de inicio de sesión -->
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="emailLogin" class="form-label">Email</label>
-              <input type="email" class="form-control" id="txtEmail" required>
-            </div>
-            <div class="mb-3">
-              <label for="passwordLogin" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" id="txtPassword" required>
-            </div>
-            <button type="submit" class="btn btn-dark">Iniciar sesión</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Fin modals para registro e inicio de sesión -->
-  <!--Modal foto 1-->
-  <div class="modal fade" id="modalfoto1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">TÍTULO ACÁ</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <!-- Indicators/dots -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
         </div>
 
-        <!-- Modal body -->
-        <div class="modal-body">
-          <p>TU TEXTO ACÁ</p>
-          <!--INICIO SECCIÓN GALERÍA-->
-          <section class="mb-5">
-            <div class="row justify-content-center m-5">
-              <h2 class="text-center my-5" style="font-family: Georgia, 'Times New Roman', Times, serif;">
-                <strong>GALERÍA</strong>
-              </h2>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
+        <!-- The slideshow/carousel -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalfoto1"><img
+                        src="https://yt3.googleusercontent.com/507HFJn8gX1TVcgdXYn7V46yeDv0pWgU9-pWpOxnDNFSZbahoj24Ey4Uyl6hJhS59AWUj_xciQ=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+                        alt="Suzuko Mimori" class="d-block w-100"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalfoto2"><img
+                        src="https://yt3.googleusercontent.com/AozhdPVvRouBdWhKmbG4naGde4GbslyxdZI0JENdQS09mSCFeoeKlUujJLVdLdaYZfWgALHmnA4=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+                        alt="Akari Kitō" class="d-block w-100"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalfoto3"><img
+                        src="https://yt3.googleusercontent.com/YicO9E4E9T-cpZmsEEG6crO7LIvHbiRr8_vimb22fU3PEVYGfeccSM4cK9982Vkt9IX7izM9uQ=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+                        alt="Tomori Kusunoki" class="d-block w-100"></a>
+            </div>
+        </div>
+
+        <!-- Left and right controls/icons -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+    <!--Fin carrusel-->
+    <!--INICIO ALBUMS-->
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Discografía</h1>
+                <p class="lead text-muted">En el Grupo Cero, la música no es solo un producto; es una extensión de
+                    nuestra alma colectiva. Te invitamos a explorar, escuchar y dejarte llevar por la corriente creativa
+                    que nos une.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-auto">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="card-img-top" src="https://www.lantis.jp/reinaueda/images/LACA-25011.jpg"
+                            alt="Card image">
+                        <div class="card-body">
+                            <p class="card-text">El álbum “Atrium” de Reina Ueda es un mini álbum que fue lanzado el 5
+                                de octubre. El tema del mini álbum es "Affirmation". Según el comunicado de prensa,
+                                puedes esperar escuchar nuevos encantos artísticos de Ueda en este mini álbum sincero
+                                que culmina en la sensación de que todo hasta ahora está conectado, y podemos avanzar
+                                hacia un futuro más brillante desde cualquier lugar en cualquier momento.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        data-bs-toggle="modal" data-bs-target="#modalAlbum1">Ver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="card-img-top" src="img/mimori_RPB_normal_RGB.jpg" alt="Card image">
+                        <div class="card-body">
+                            <p class="card-text">RPB es el primer mejor álbum de Mimori Suzuko en conmemoración del
+                                décimo aniversario desde su debut como solista. Fue lanzado el 5 de abril de 2023.
+
+                                El álbum consta de tres discos categorizados como "Rojo" para canciones apasionadas y
+                                enérgicas, "Rosa" para canciones encantadoras, felices y lindas, y "Azul" para canciones
+                                relajadas, geniales y juveniles. </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        data-bs-toggle="modal" data-bs-target="#modalAlbum2">Ver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
-                  <div class="card-body text-center">
-                  </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="card-img-top"
+                            src="https://storage.nex-tone.link/variants/zcnuat6993zii6m0blki1gp2mwe0/58ced8645b3590cbce39715a69f533062ca8cc552015349942d6fcfa04a99400"
+                            alt="Card image">
+                        <div class="card-body">
+                            <p class="card-text">“Shiro to Hanataba” es un álbum de Saori Hayami lanzado el 24 de mayo
+                                de 2023. El álbum es una mezcla de géneros Pop Rock y Power Pop. La edición del álbum
+                                viene con un Blu-ray de su concierto del 2 de enero de 2023 en TOKYO DOME CITY HALL, un
+                                folleto, un libro de fotos en vivo y un estuche de funda.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        data-bs-toggle="modal" data-bs-target="#modalAlbum3">Ver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="text-center pt-0 pb-0">
-                <a href="gallery_logged.html" class="btn btn-outline-danger">Ver más imágenes</a>
-              </div>
             </div>
-          </section>
-          <!--FINAL SECCIÓN GALERÍA-->
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Fin del modal foto 1-->
-  <!--Modal foto 2-->
-  <div class="modal fade" id="modalfoto2">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">TÍTULO ACÁ</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <p>TU TEXTO ACÁ</p>
-          <!--INICIO SECCIÓN GALERÍA-->
-          <section class="mb-5">
-            <div class="row justify-content-center m-5">
-              <h2 class="text-center my-5" style="font-family: Georgia, 'Times New Roman', Times, serif;">
-                <strong>GALERÍA</strong>
-              </h2>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
-                  <div class="card-body text-center">
-                  </div>
-                </div>
-              </div>
-              <div class="text-center pt-0 pb-0">
-                <a href="gallery_logged.html" class="btn btn-outline-danger">Ver más imágenes</a>
-              </div>
+            <div class="text-center pt-5 pb-5">
+                <a href="products.html#colecciones" class="btn btn-outline-success">Ver más colecciones</a>
             </div>
-          </section>
-          <!--FINAL SECCIÓN GALERÍA-->
         </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
     </div>
-  </div>
-  <!-- Fin del modal foto 2-->
-  <!--Modal foto 3-->
-  <div class="modal fade" id="modalfoto3">
-    <div class="modal-dialog">
-      <div class="modal-content">
+    <!--FINAL ALBUMS-->
 
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">TÍTULO ACÁ</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <p>TU TEXTO ACÁ</p>
-          <!--INICIO SECCIÓN GALERÍA-->
-          <section class="mb-5">
-            <div class="row justify-content-center m-5">
-              <h2 class="text-center my-5" style="font-family: Georgia, 'Times New Roman', Times, serif;">
-                <strong>GALERÍA</strong>
-              </h2>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                  <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                    style="max-width: 230px; max-height: 230px;">
-                  <div class="card-body text-center">
-                  </div>
-                </div>
-              </div>
-              <div class="text-center pt-0 pb-0">
-                <a href="gallery_logged.html" class="btn btn-outline-danger">Ver más imágenes</a>
-              </div>
+    <!--INICIO ARTISTAS-->
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Artistas</h1>
+                <p class="lead text-muted">Explora la galería donde la música y las artes visuales se fusionan. Cada
+                    artista presenta una muestra de su trabajo, ofreciendo una ventana a su mundo. Aquí, la música se
+                    convierte en color, forma y textura, y las obras visuales se transforman en partituras de emociones.
+                </p>
             </div>
-          </section>
-          <!--FINAL SECCIÓN GALERÍA-->
         </div>
+    </section>
 
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+    <div class="album py-auto">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-4 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="card-img-top" src="img/Mimori_Suzuko_-_June_2023.webp" alt="Card image">
+                        <div class="card-text text-center mt-3">
+                            <h4>Suzuko Mimori</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Suzuko Mimori es una artista multifacética japonesa, reconocida por su
+                                trabajo como actriz de voz (seiyū), cantante y actriz de teatro. Ha prestado su voz a
+                                personajes icónicos en varias franquicias de anime populares y ha lanzado múltiples
+                                canciones y álbumes como cantante. Su talento y versatilidad la han convertido en una
+                                figura destacada en la industria del entretenimiento japonés. Además de su carrera
+                                artística, Mimori también es conocida por su dedicación y pasión, lo que la ha llevado a
+                                tener un impacto significativo en su campo.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        data-bs-toggle="modal" data-bs-target="#modalSuzuko">Ver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="card-img-top" src="img/RieTakahashi.webp" alt="Card image">
+                        <div class="card-text text-center mt-3">
+                            <h4>Rie Takahashi</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Rie Takahashi, una seiyū y cantante japonesa, ha dejado su huella en la
+                                industria del anime con roles memorables en series como Kono Subarashii Sekai ni
+                                Shukufuku o! y Re:Zero kara Hajimeru Isekai Seikatsu. Además de su trabajo en el
+                                doblaje, es parte de la unidad de seiyū Earphones. Su habilidad para adaptarse a
+                                diferentes personajes y su pasión por su trabajo la han convertido en una figura
+                                respetada en su campo. Su impacto en la industria del anime es innegable.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        data-bs-toggle="modal" data-bs-target="#modalRie">Ver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="card-img-top" src="img/Minase_Inori_-_Scrap_Art.webp" alt="Card image">
+                        <div class="card-text text-center mt-3">
+                            <h4>Inori Minase</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Inori Minase es una actriz de voz y cantante japonesa, conocida por su
+                                versatilidad en la interpretación de personajes de anime y su música en los géneros
+                                J-Pop y Anison. Su talento y dedicación la han llevado a recibir reconocimientos en la
+                                industria del entretenimiento japonés. Su humildad y pasión por su trabajo la hacen
+                                querida por sus fans.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        data-bs-toggle="modal" data-bs-target="#modalInori">Ver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-5 pb-5">
+                <a href="products.html#artistas" class="btn btn-outline-success">Ver más artistas</a>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <!-- Fin del modal foto 3-->
-  <!-- Footer -->
-  <footer class="banner">
-    <div class="banner-img"></div>
-    <div class="banner-content">
-      <p class="mb-0 h3" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">GRUPO CERO -
-        COOPERATIVA ARTÍSTICA</p>
-      <p style="font-family: Verdana, Geneva, Tahoma, sans-serif;">TODOS LOS DERECHOS RESERVADOS @ 2024</p>
+    <!--FINAL ARTISTAS-->
+
+    <!-- Inicio modals para registro e inicio de sesión -->
+    <!--MODAL Registro-->
+    <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registroModalLabel">Registro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Formulario de registro -->
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="emailRegistro" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="txtEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombreRegistro" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="txtUsuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="passwordRegistro" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="txtPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="passwordRegistroR" class="form-label">Confirmar contraseña</label>
+                            <input type="password" class="form-control" id="txtPasswordR" required>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </footer>
-  <!-- Fin del footer -->
-  <!--INICIO Scripts-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!--FINAL Scripts-->
+    <!--MODAL Login-->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Iniciar sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Formulario de inicio de sesión -->
+                <div class="modal-body">
+                    <form action="index_logged.html">
+                        <div class="mb-3">
+                            <label for="emailLogin" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="txtEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="passwordLogin" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="txtPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Iniciar sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin modals para registro e inicio de sesión -->
+    <!--Inicio modals para el carrusel-->
+    <!--Modal foto 1-->
+    <div class="modal fade" id="modalfoto1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">PINK♡BABY♡KISS♡</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <p>PINK♡BABY♡KISS♡ es el décimo sencillo de Mimori Suzuko. Fue lanzado el 2 de agosto de 2023 en
+                        conmemoración del décimo aniversario de su debut en solitario.</p>
+                    <!--INICIO SECCIÓN GALERÍA-->
+                    <section class="mb-5">
+                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
+                            <img class="card-img-top" src="img/mimori_PBK_jacket-1.jpg" alt="">
+                        </div>
+                        <div class="text-center pt-0 pb-0">
+                            <a href="products.html#artistas" class="btn btn-outline-danger">Más información del
+                                artista</a>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del modal foto 1-->
+    <!--Modal foto 2-->
+    <div class="modal fade" id="modalfoto2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Yume no Ito</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <p>Yume no Ito (夢の糸) es el sexto sencillo de Kito Akari. Fue lanzado el 31 de enero de 2024 y
+                        alcanzó el puesto 19 en la lista de sencillos de Oricon.</p>
+                    <!--INICIO SECCIÓN GALERÍA-->
+                    <section class="mb-5">
+                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
+                            <img class="card-img-top"
+                                src="https://kitoakari.com/wp/wp-content/themes/kitoakari/assets/images/common/yumenoito/thumb_yumenoito_02.jpg"
+                                alt="">
+                        </div>
+                        <div class="text-center pt-0 pb-0">
+                            <a href="products.html#artistas" class="btn btn-outline-danger">Más información del
+                                artista</a>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del modal foto 2-->
+    <!--Modal foto 3-->
+    <div class="modal fade" id="modalfoto3">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Shingetsu</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <p>El nuevo sencillo de Tomori Kusunoki, titulado “Shingetsu”, se lanzará el 8 de mayo de 2024.
+                        La canción es producida por TETSUYA, quien es el líder y bajista de L’Arc-en-Ciel. L’Arc-en-Ciel
+                        es un grupo que Tomori Kusunoki ha admirado desde su infancia.
+                    </p>
+                    <!--INICIO SECCIÓN GALERÍA-->
+                    <section class="mb-5">
+                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
+                            <img class="card-img-top"
+                                src="https://www.sonymusic.co.jp/img/common/artist_image/70009000/70009397/images/202403222319140.jpg"
+                                alt="">
+                        </div>
+                        <div class="text-center pt-0 pb-0">
+                            <a href="products.html#artistas" class="btn btn-outline-danger">Más información del
+                                artista</a>
+                        </div>
+                    </section>
+                    <!--FINAL SECCIÓN GALERÍA-->
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del modal foto 3-->
+    <!--Fin del modal carrusel-->
+
+    <!-- MODAL ARTISTA 1-->
+    <div class="modal fade" id="modalSuzuko" tabindex="-1" aria-labelledby="modalSuzukoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSuzukoLabel">Suzuko Mimori</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fvignette.wikia.nocookie.net%2Flove-live%2Fimages%2F4%2F4d%2FMimoChan.jpg%2Frevision%2Flatest%3Fcb%3D20160526194100%26path-prefix%3Des&f=1&nofb=1&ipt=1cd010fbf0c8bfcc6a34027966631f9a00e28b8e12d9b2cb8227f55c5183edbd&ipo=images"
+                            alt="foto_suzuko" class="img-fluid">
+                    </div>
+                    <p class="my-5"><strong>Descripción: </strong> Suzuko Mimori es una actriz de voz y cantante
+                        japonesa muy
+                        reconocida. Ha dado vida a una variedad de personajes en series populares como Umi Sonoda en
+                        “Love Live!”, Sherlock Shellingford en “Detective Opera Milky Holmes” y Kagura Hikari en “Shoujo
+                        Kageki Revue Starlight”.
+
+                        Además de su trabajo en la actuación de voz, Mimori también ha demostrado ser una presentadora
+                        talentosa, asumiendo el papel de presentadora todos los martes en el programa “Yūgata Paradise”
+                        de NHK-FM.
+
+                        En el teatro, Mimori ha demostrado su versatilidad, interpretando a Anita en la versión japonesa
+                        del musical de Broadway “West Side Story” en el IHI Stage Around Tokyo en noviembre de 2019.
+
+                        Mimori también tiene una presencia significativa en las redes sociales, con más de 1.18 millones
+                        de seguidores en Twitter a partir de abril de 2020.
+
+                        Como artista musical, Mimori hizo su debut en solitario en abril de 2013 con el sencillo “Aitai
+                        yo… Aitai yo!”. Su concierto “Mimori Suzuko Live 2017 ‘Tropical Paradise’” en septiembre de 2017
+                        destacó su impresionante habilidad para cantar y su excelente baile, atrayendo a 12,000 personas
+                        en tres espectáculos en Tokio y Osaka. Su octavo sencillo “Egao no Kimi e”, lanzado en octubre
+                        de 2017, alcanzó el cuarto lugar en la lista semanal de Oricon, su récord personal. En febrero
+                        de 2020, celebró “Mimori Suzuko Live 2020 ‘mimokokoromo’” en LINE CUBE SHIBUYA, que se agotó
+                        completamente.
+
+                        Mientras continúa su trabajo como actriz de voz, Mimori también sigue siendo una cantante
+                        activa, demostrando su dedicación y pasión por su oficio.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ARTISTA 2 -->
+    <div class="modal fade" id="modalRie" tabindex="-1" aria-labelledby="modalRieLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalRieLabel">Rie Takahashi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.wikia.nocookie.net%2Fnintendo%2Fimages%2Fa%2Fa2%2FRieTakahashi.jpg%2Frevision%2Flatest%3Fcb%3D20210902024117%26path-prefix%3Den&f=1&nofb=1&ipt=304f0942589af2d198cbce73778d10507133c3a67cb76122cddeb48d9b3924a1&ipo=images"
+                            alt="foto_rie" class="img-fluid">
+                    </div>
+                    <p class="my-5"><strong>Descripción: </strong> Rie Takahashi, es una destacada actriz de voz y
+                        cantante. Está afiliada a la agencia 81 Produce.
+
+                        Takahashi ha interpretado una variedad de roles principales en series de anime. Es conocida por
+                        su papel de Megumin en "Kono Subarashii Sekai ni Shukufuku o!", Takagi-san en "Karakai Jōzu no
+                        Takagi-san", y Emilia en "Re:Zero kara Hajimeru Isekai Seikatsu" entre otros.
+
+                        En 2016, fue galardonada con el premio a la Mejor Actriz Revelación en los 10° Seiyu Awards.
+                        Además de su carrera en la actuación de voz, Takahashi también es parte de la unidad musical
+                        Earphones, formada durante la producción de la serie de anime "Seiyu's Life!".
+
+                        Takahashi es una artista versátil que ha demostrado su talento tanto en la actuación de voz como
+                        en la música. Su dedicación y pasión por su oficio se reflejan en su amplia gama de roles y en
+                        su música, lo que la ha convertido en una figura prominente en la industria del entretenimiento
+                        japonés. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL ARTISTA 3 -->
+    <div class="modal fade" id="modalInori" tabindex="-1" aria-labelledby="modalInoriLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalInoriLabel">Inori Minase</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.wikia.nocookie.net%2Fseiyuwiki%2Fimages%2Fd%2Fdb%2FInori_Minase.jpg%2Frevision%2Flatest%3Fcb%3D20200114013940&f=1&nofb=1&ipt=762276952c410ad0b17ad7e89327fff48cf57c7cfb0836390a0066c3023076e0&ipo=images"
+                            alt="foto_inori" class="img-fluid">
+                    </div>
+                    <p class="my-5"><strong>Descripción: </strong> Inori Minase, nacida el 2 de diciembre de 1995 en
+                        Tokio, es una figura prominente en la industria del entretenimiento japonés, conocida por su
+                        talento como actriz de voz y cantante. Desde una temprana edad, Minase mostró un profundo
+                        interés por el anime, lo que la llevó a decidir convertirse en actriz de voz cuando apenas tenía
+                        seis años.
+
+                        A lo largo de su carrera, Minase ha interpretado una variedad de roles en series de anime
+                        populares. Destaca su trabajo en “Re:Zero kara Hajimeru Isekai Seikatsu”, “Dungeon ni Deai o
+                        Motomeru no wa Machigatteiru Darō ka”, y “Gochūmon wa Usagi Desu ka?”. Además, ha prestado su
+                        voz a personajes en videojuegos, incluyendo a Furina en “Genshin Impact”.
+
+                        En 2016, su talento fue reconocido cuando ganó el premio a la Mejor Actriz Principal en los 10°
+                        Seiyu Awards. Más allá de su carrera en la actuación de voz, Minase también ha demostrado ser
+                        una cantante talentosa. Hizo su debut en solitario en diciembre de 2015 bajo King Records.
+
+                        Minase continúa impresionando a sus fans con su talento y carisma, tanto en su trabajo como en
+                        su interacción con los fans. Su dedicación y pasión por su oficio se reflejan en su amplia gama
+                        de roles y en su música. Además de su trabajo en la actuación de voz y la música, Minase también
+                        ha cautivado a sus fans con su encanto personal, convirtiéndola en una figura muy querida en la
+                        industria.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ALBUM 1-->
+    <div class="modal fade" id="modalAlbum1" tabindex="-1" aria-labelledby="modalAlbum1Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAlbum1Label">Álbum Atrium</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container my-3">
+                        <img src="https://www.lantis.jp/reinaueda/images/LACA-25011.jpg" alt=""
+                            class="img-fluid mx-auto">
+                    </div>
+                    <p><strong>Descripción: </strong>
+                    <p> El álbum “Atrium” de Reina Ueda es un mini álbum que fue lanzado el 5 de octubre. El tema del
+                        mini álbum es "Affirmation". Según el comunicado de prensa, puedes esperar escuchar nuevos
+                        encantos artísticos de Ueda en este mini álbum sincero que culmina en la sensación de que todo
+                        hasta ahora está conectado, y podemos avanzar hacia un futuro más brillante desde cualquier
+                        lugar en cualquier momento. </p>
+                    </p>
+                    <p><strong>Precio:</strong> $25.064</p>
+                    <p><strong>Lista de canciones:</strong>
+                    <ul>
+                        <li>
+                            <p>Haki naretenai Kutsu no mama de</p>
+                        </li>
+                        <li>
+                            <p>My Pace</p>
+                        </li>
+                        <li>
+                            <p>Kingyohime</p>
+                        </li>
+                        <li>
+                            <p>Andante</p>
+                        </li>
+                        <li>
+                            <p>Kaerimichi</p>
+                        </li>
+                        <li>
+                            <p>Totteoki no Binsen</p>
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ALBUM 2-->
+    <div class="modal fade" id="modalAlbum2" tabindex="-1" aria-labelledby="modalAlbum2Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAlbum2Label">Álbum RPB</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container my-3">
+                        <img src="http://127.0.0.1:5501/img/mimori_RPB_normal_RGB.jpg" alt="" class="img-fluid mx-auto">
+                    </div>
+                    <p><strong>Descripción: </strong>
+                    <p> RPB es el primer mejor álbum de Mimori Suzuko en conmemoración del décimo aniversario desde su
+                        debut como solista. Fue lanzado el 5 de abril de 2023. El álbum consta de tres discos
+                        categorizados como "Rojo" para canciones apasionadas y enérgicas, "Rosa" para canciones
+                        encantadoras, felices y lindas, y "Azul" para canciones relajadas, geniales y juveniles. </p>
+                    </p>
+                    <p><strong>Precio:</strong> $37.221</p>
+                    <p><strong>Lista de canciones:</strong>
+                    <ul>
+                        <li>
+                            <p><strong>Álbum R</strong></p>
+                            <ul>
+                                <li>
+                                    <p>Minna de Yeah! Ooooh!! </p>
+                                </li>
+                                <li>
+                                    <p>Junjo Dadandan</p>
+                                </li>
+                                <li>
+                                    <p>Univer Page</p>
+                                </li>
+                                <li>
+                                    <p>Kakumei no Masquerade</p>
+                                </li>
+                                <li>
+                                    <p>Light for Knight</p>
+                                </li>
+                                <li>
+                                    <p>Xenotopia</p>
+                                </li>
+                                <li>
+                                    <p>Glory!</p>
+                                </li>
+                                <li>
+                                    <p>Chance!</p>
+                                </li>
+                                <li>
+                                    <p>Heart Collection</p>
+                                </li>
+                                <li>
+                                    <p>Tiny Train Tour</p>
+                                </li>
+                                <li>
+                                    <p>Yumemiru! Shinjiru! Mirai Kanaete!</p>
+                                </li>
+                                <li>
+                                    <p>Mirai Start</p>
+                                </li>
+                                <li>
+                                    <p>Ne,Sodesyo!?</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p><strong>Álbum P</strong></p>
+                            <ul>
+                                <li>
+                                    <p>Fantasic Funfair</p>
+                                </li>
+                                <li>
+                                    <p>Dokidoki Tokidoki Tokimekiss</p>
+                                </li>
+                                <li>
+                                    <p>Chuttashugarin</p>
+                                </li>
+                                <li>
+                                    <p>Future is Mine</p>
+                                </li>
+                                <li>
+                                    <p>Colorful Girl</p>
+                                </li>
+                                <li>
+                                    <p>Koi no Kimochi wa 5%</p>
+                                </li>
+                                <li>
+                                    <p>Sugarless Kiss</p>
+                                </li>
+                                <li>
+                                    <p>Koi wa Illusion</p>
+                                </li>
+                                <li>
+                                    <p>Aitaiyo...Aitaiyo!</p>
+                                </li>
+                                <li>
+                                    <p>Seiippai, Tsutaetai!</p>
+                                </li>
+                                <li>
+                                    <p>Zembu Uketotte, Tsuyoku Dakis...</p>
+                                </li>
+                                <li>
+                                    <p>Wonderland Love</p>
+                                </li>
+                                <li>
+                                    <p>Okina Ai de Kimi o Dakishimeyo</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p><strong>Álbum B</strong></p>
+                            <ul>
+                                <li>
+                                    <p>Egao no Kimi e</p>
+                                </li>
+                                <li>
+                                    <p>Summer Vacation</p>
+                                </li>
+                                <li>
+                                    <p>Umi to Sora no Himitsu</p>
+                                </li>
+                                <li>
+                                    <p>Chiisana Te to Kanransha</p>
+                                </li>
+                                <li>
+                                    <p>Yakusoku shiteyo? Isshodayo!</p>
+                                </li>
+                                <li>
+                                    <p>Wonder Flight</p>
+                                </li>
+                                <li>
+                                    <p>Hikari no Melody</p>
+                                </li>
+                                <li>
+                                    <p>Smilium</p>
+                                </li>
+                                <li>
+                                    <p>Sakiwafuhana</p>
+                                </li>
+                                <li>
+                                    <p>Are Kore</p>
+                                </li>
+                                <li>
+                                    <p>My First Lesson</p>
+                                </li>
+                                <li>
+                                    <p>Hoshikuzu no Curtain</p>
+                                </li>
+                                <li>
+                                    <p>Suzu ga Naruhi</p>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ALBUM 3-->
+    <div class="modal fade" id="modalAlbum3" tabindex="-1" aria-labelledby="modalAlbum3Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAlbum3Label">Álbum Shiro to Hanataba</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container my-3">
+                        <img src="https://storage.nex-tone.link/variants/zcnuat6993zii6m0blki1gp2mwe0/58ced8645b3590cbce39715a69f533062ca8cc552015349942d6fcfa04a99400"
+                            alt="" class="img-fluid mx-auto">
+                    </div>
+                    <p><strong>Descripción: </strong>
+                    <p> “Shiro to Hanataba” es un álbum de Saori Hayami lanzado el 24 de mayo de 2023. El álbum es una
+                        mezcla de géneros Pop Rock y Power Pop. La edición del álbum viene con un Blu-ray de su
+                        concierto del 2 de enero de 2023 en TOKYO DOME CITY HALL, un folleto, un libro de fotos en vivo
+                        y un estuche de funda. </p>
+                    </p>
+                    <p><strong>Precio:</strong> $20.540</p>
+                    <p><strong>Lista de canciones:</strong>
+                    <ul>
+                        <li>
+                            <p>Ordinary</p>
+                        </li>
+                        <li>
+                            <p>Abyss</p>
+                        </li>
+                        <li>
+                            <p>Zanshi</p>
+                        </li>
+                        <li>
+                            <p>Kokode Kokode</p>
+                        </li>
+                        <li>
+                            <p>Tear of Will</p>
+                        </li>
+                        <li>
+                            <p>Awake</p>
+                        </li>
+                        <li>
+                            <p>Fluorescense</p>
+                        </li>
+                        <li>
+                            <p>Toumei Singer</p>
+                        </li>
+                        <li>
+                            <p>Emerald</p>
+                        </li>
+                        <li>
+                            <p>Guide</p>
+                        </li>
+                        <li>
+                            <p>Shiko</p>
+                        </li>
+                        <li>
+                            <p>Hajimarino Uta</p>
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Inicio footer-->
+    <footer class="footer mt-auto py-3 bg-success">
+        <div class="container text-center py-3">
+            <span class="text-white">&copy; 2024 Grupo Cero. Todos los derechos reservados.</span>
+        </div>
+    </footer>
+    <!--Final footer-->
+    <!--Scripts del html-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!--Bootstrap 5 js-->
+    <!--Final Scripts del html-->
 </body>
-<!--FINAL BODY-->
 
 </html>

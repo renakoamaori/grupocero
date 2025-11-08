@@ -4,133 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grupo Cero - Galería de imágenes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css" /> <!--Estilo personalizado-->
+    <title>Grupo Cero - PAGINA</title>
+    <!--Bootstrap 5 css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Bootstrap 5 Iconos-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!--CSS Custom-->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <!-- Inicio menú con logo -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <!--Inicio navbar--> 
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <!-- Logo al principio -->
-            <a class="navbar-brand" href="index_logged.html"><img src="img/logo.png" style="width: 40px"
-                    alt="Logo GC" class="rounded-pill" /></a>
+            <!-- Botón para el menú vertical solo visible en pantallas grandes -->
+            <div class="d-none d-lg-block">
+                <button class="btn me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuVertical"
+                    aria-controls="menuVertical">
+                    <h4><i class="bi bi-three-dots-vertical"></i></h4>
+                </button>
+            </div>
+            <!-- Fin del botón para el menú vertical -->
 
-            <!-- Botón de colapsable -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <!-- Botón para el menú colapsable visible en dispositivos móviles -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- Fin del botón para el menú colapsable -->
 
-            <!-- Contenido del menú -->
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <!-- Sección "Mi cuenta" al lado del logo -->
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Bienvenido, usuario </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="index.html">Cerrar Sesión</a></li>
-                              </ul>
-                    </li>
-                    <!--DROPDOWN PARA LOS PRODUCTOS-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Productos
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#">Categorías<span
-                                        class="float-end custom-toggle-arrow">&#187</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="products_logged.html#arte">Arte</a></li>
-                                    <li><a class="dropdown-item" href="products_logged.html#pintura">Pintura</a></li>
-                                </ul>
+            <a class="navbar-brand d-flex w-50 me-auto" href="index_logged.html"><img class="rounded-pill"
+                src="img/main_logo.jpg" alt="LOGO" style="width: 50px;"></a>
+
+            <!-- Link con el logo de la cooperativa -->
+
+            <div class="collapse navbar-collapse w-100" id="navbarNavDropdown">
+                <div class="navbar-nav w-100 justify-content-center">
+                    <!--Cuadro de búsqueda-->
+                    <form class="d-flex me-5 w-100">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="bi bi-search"></i> <!-- Icono de búsqueda -->
+                        </button>
+                    </form>
+                </div>
+                <!--Link al login-->
+                <ul class="navbar-nav w-100 justify-content-end ms-auto">
+                    <!-- Enlaces del menú vertical duplicados en el menú colapsable -->
+                    <li class="nav-item dropdown d-lg-none">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Menú</a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="index_logged.html">Inicio</a>
                             </li>
-                            <!--Submenu artistas-->
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#"> Artistas <span
-                                        class="float-end custom-toggle-arrow">&#187</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="products_logged.html#artista">Artista 1</a></li>
-                                    <li><a class="dropdown-item" href="products_logged.html#artista">Artista 2</a></li>
-                                </ul>
+                            <li>
+                                <a class="dropdown-item" href="products_logged.html">Productos</a>
                             </li>
-                            <a href="products_logged.html" class="dropdown-item">Ver todos</a>
+                            <li>
+                                <a class="dropdown-item" href="#">Galería</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="about_logged.html">Acerca de</a>
+                            </li>
                         </ul>
                     </li>
-                    <!--FIN DROPDOWN-->
-                    <li class="nav-item">
-                        <a class="nav-link activo" href="#">Galería de imágenes</a>
+                    <!-- Fin de los enlaces duplicados -->
+
+                    <li class="nav-item dropdown mt-3 me-auto">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Bienvenido, usuario
+                            </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="index.html">Cerrar sesión</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about_logged.html">Acerca de</a>
+                    <li class="nav-item mt-3 d-flex">
+                        <p class="navbar-text">Cantidad de productos: <span id="product-count">3</span></p>
+                        <a class="btn" href="carrito.html">
+                            <h4>
+                                <i class="bi bi-cart"></i>
+                            </h4>
+                        </a>
                     </li>
                 </ul>
-
-                <!-- Contador centrado -->
-                <div class="mx-auto">
-                    <p class="navbar-text">Cantidad de productos: <span id="product-count">0</span></p>
-                </div>
-
-                <!-- Barra de búsqueda al final a la derecha -->
-                <div class="ml-auto">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6" style="width: 60vh;">
-                                <form class="d-flex">
-                                    <input class="form-control me-2" type="search"
-                                        placeholder="Artista, tipo de arte o concepto." aria-label="Search" />
-                                    <button class="btn btn-outline-danger" type="submit">
-                                        Buscar
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </nav>
-    <!--FIN DEL MENU CON LOGO-->
-    <!--INICIO SECCIÓN GALERÍA-->
+
+    <!-- Menú vertical -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="menuVertical" aria-labelledby="menuVerticalLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="menuVerticalLabel">Menú vertical</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body text-center ms-auto me-auto d-lg-block">
+            <!-- Elementos del menú vertical -->
+            <a class="nav-link linkcustom my-4 btn" href="index_logged.html" role="button">
+                <h5><i class="bi bi-house"> Inicio </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="products_logged.html" role="button">
+                <h5><i class="bi bi-basket"> Productos </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="#" role="button">
+                <h5><i class="bi bi-images"> Galería </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="about_logged.html" role="button">
+                <h5><i class="bi bi-info-circle"> Acerca de </i></h5>
+            </a>
+        </div>
+    </div>
+    <!-- Fin del menú vertical -->
+    <!--Final navbar-->
+
+
+
+    <!-- SECCIONES-->
+
+
+    <!--AQUÍ VAN LAS SECCIONES-->
+
     <section class="mb-5">
         <section class="mb-5">
             <div class="row justify-content-center m-5">
-                <h2 class="text-center my-5" style="font-family: Georgia, 'Times New Roman', Times, serif;">
-                    <strong>GALERÍA</strong>
-                </h2>
+                <h2 class="text-center my-5 fw-light"> <strong> GALERÍA</strong> </h2>
                 <div class="col-md-2 col-sm-12">
                     <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                        <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                            style="max-width: 230px; max-height: 230px;">
-                        <div class="card-body text-center">
-                            <p class="h5"
-                                style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title
-                            </p>
-                        </div>
+                        <img class="card-img-top" src="img/mimori.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-12">
                     <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                        <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                            style="max-width: 230px; max-height: 230px;">
-                        <div class="card-body text-center">
-                            <p class="h5"
-                                style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title
-                            </p>
-                        </div>
+                        <img class="card-img-top" src="https://i.scdn.co/image/ab67616d0000b273a7238bf5f86e9d50af5dc923" alt="">
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-12">
                     <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                        <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                            style="max-width: 230px; max-height: 230px;">
-                        <div class="card-body text-center">
-                            <p class="h5"
-                                style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title
-                            </p>
-                        </div>
+                        <img class="card-img-top" src="https://i.scdn.co/image/ab67616d0000b273cb0123798794c829a32c9a1d" alt="">
                     </div>
                 </div>
             </div>
@@ -139,62 +150,50 @@
             <div class="row justify-content-center m-5">
                 <div class="col-md-2 col-sm-12">
                     <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                        <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                            style="max-width: 230px; max-height: 230px;">
-                        <div class="card-body text-center">
-                            <p class="h5"
-                                style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title
-                            </p>
-                        </div>
+                        <img class="card-img-top" src="https://i.scdn.co/image/ab67616d0000b2734bba2124b36a570e19f42ef2" alt="">
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-12">
                     <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                        <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                            style="max-width: 230px; max-height: 230px;">
-                        <div class="card-body text-center">
-                            <p class="h5"
-                                style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title
-                            </p>
-                        </div>
+                        <img class="card-img-top" src="https://i.scdn.co/image/ab67616d0000b27381610401272e18f779d45d56" alt="">
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-12">
                     <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                        <img class="card-img-top" src="https://via.placeholder.com/512x512" alt=""
-                            style="max-width: 230px; max-height: 230px;">
-                        <div class="card-body text-center">
-                            <p class="h5"
-                                style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">title
-                            </p>
-                        </div>
+                        <img class="card-img-top" src="https://i.scdn.co/image/ab67616d0000b273ecf12e05d8d84b0e41e31b3e" alt="">
                     </div>
                 </div>
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled"><a class="page-link" href="#">Atrás</a></li>
+                    <li class="page-item">
+                      <a class="page-link disabled" href="#" aria-label="Previous">
+                        <span aria-hidden="true"><i class="bi bi-arrow-left"></i></span>
+                      </a>
+                    </li>
                     <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                </ul>
+                    <li class="page-item"><a class="page-link" href="gallery2_logged.html">2</a></li>
+                    <li class="page-item"><a class="page-link" href="gallery3_logged.html">3</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="gallery2_logged.html" aria-label="Next">
+                        <span aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+                      </a>
+                    </li>
+                  </ul>
             </div>
         </section>
     </section>
-    <!--FINAL SECCIÓN GALERÍA-->
-    <!-- Footer -->
-    <footer class="banner">
-        <div class="banner-img"></div>
-        <div class="banner-content">
-            <p class="mb-0 h3" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">GRUPO
-                CERO -
-                COOPERATIVA ARTÍSTICA</p>
-            <p style="font-family: Verdana, Geneva, Tahoma, sans-serif;">TODOS LOS DERECHOS RESERVADOS @ 2024</p>
+
+
+    <!--Inicio footer-->
+    <footer class="footer mt-auto py-3 bg-success">
+        <div class="container text-center py-3">
+            <span class="text-white">&copy; 2024 Grupo Cero. Todos los derechos reservados.</span>
         </div>
     </footer>
-    <!-- Fin del footer -->
-    <!--INICIO Scripts-->
+    <!--Final footer-->
+    <!--Scripts del html-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!--FINAL Scripts-->
+    <!--Bootstrap 5 js-->
+    <!--Final Scripts del html-->
 </body>
 
 </html>

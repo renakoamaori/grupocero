@@ -4,126 +4,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grupo Cero - Galería de imágenes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css" /> <!--Estilo personalizado-->
+    <title>Grupo Cero - PAGINA</title>
+    <!--Bootstrap 5 css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Bootstrap 5 Iconos-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!--CSS Custom-->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <!-- Inicio menú con logo -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <!--Inicio navbar-->
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <!-- Logo al principio -->
-            <a class="navbar-brand" href="index_logged.html"><img src="img/logo.png" style="width: 40px"
-                    alt="Logo GC" class="rounded-pill" /></a>
+            <!-- Botón para el menú vertical solo visible en pantallas grandes -->
+            <div class="d-none d-lg-block">
+                <button class="btn me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuVertical"
+                    aria-controls="menuVertical">
+                    <h4><i class="bi bi-three-dots-vertical"></i></h4>
+                </button>
+            </div>
+            <!-- Fin del botón para el menú vertical -->
 
-            <!-- Botón de colapsable -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <!-- Botón para el menú colapsable visible en dispositivos móviles -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- Fin del botón para el menú colapsable -->
 
-            <!-- Contenido del menú -->
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <!-- Sección "Mi cuenta" al lado del logo -->
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Bienvenido, usuario</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="index.html">Cerrar Sesión</a></li>
+            <a class="navbar-brand d-flex w-50 me-auto" href="index_logged.html"><img class="rounded-pill"
+                src="img/main_logo.jpg" alt="LOGO" style="width: 50px;"></a>
+
+            <!-- Link con el logo de la cooperativa -->
+
+            <div class="collapse navbar-collapse w-100" id="navbarNavDropdown">
+                <div class="navbar-nav w-100 justify-content-center">
+                    <!--Cuadro de búsqueda-->
+                    <form class="d-flex me-5 w-100">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="bi bi-search"></i> <!-- Icono de búsqueda -->
+                        </button>
+                    </form>
+                </div>
+                <!--Link al login-->
+                <ul class="navbar-nav w-100 justify-content-end ms-auto">
+                    <!-- Enlaces del menú vertical duplicados en el menú colapsable -->
+                    <li class="nav-item dropdown d-lg-none">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Menú</a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="index_logged.html">Inicio</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="products_logged.html">Productos</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="gallery_logged.html">Galería</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Acerca de</a>
+                            </li>
                         </ul>
                     </li>
-                    <!--DROPDOWN PARA LOS PRODUCTOS-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Productos
+                    <!-- Fin de los enlaces duplicados -->
+
+                    <li class="nav-item dropdown mt-3 me-auto">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Bienvenido, usuario
+                            </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="index.html">Cerrar sesión</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item mt-3 d-flex">
+                        <p class="navbar-text">Cantidad de productos: <span id="product-count">3</span></p>
+                        <a class="btn" href="carrito.html">
+                            <h4>
+                                <i class="bi bi-cart"></i>
+                            </h4>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#">Categorías<span
-                                        class="float-end custom-toggle-arrow">&#187</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="products_logged.html#arte">Arte</a></li>
-                                    <li><a class="dropdown-item" href="products_logged.html#pintura">Pintura</a></li>
-                                </ul>
-                            </li>
-                            <!--Submenu artistas-->
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#"> Artistas <span
-                                        class="float-end custom-toggle-arrow">&#187</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="products_logged.html#artista">Artista 1</a></li>
-                                    <li><a class="dropdown-item" href="products_logged.html#artista">Artista 2</a></li>
-                                </ul>
-                            </li>
-                            <a href="products_logged.html" class="dropdown-item">Ver todos</a>
-                        </ul>
-                    </li>
-                    <!--FIN DROPDOWN-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="gallery_logged.html">Galería de imágenes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link activo" href="#">Acerca de</a>
                     </li>
                 </ul>
-
-                <!-- Contador centrado -->
-                <div class="mx-auto">
-                    <p class="navbar-text">Cantidad de productos: <span id="product-count">0</span></p>
-                </div>
-
-                <!-- Barra de búsqueda al final a la derecha -->
-                <div class="ml-auto">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6" style="width: 60vh;">
-                                <form class="d-flex">
-                                    <input class="form-control me-2" type="search"
-                                        placeholder="Artista, tipo de arte o concepto." aria-label="Search" />
-                                    <button class="btn btn-outline-danger" type="submit">
-                                        Buscar
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </nav>
-    <!--FIN DEL MENU CON LOGO-->
+
+    <!-- Menú vertical -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="menuVertical" aria-labelledby="menuVerticalLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="menuVerticalLabel">Menú vertical</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body text-center ms-auto me-auto d-lg-block">
+            <!-- Elementos del menú vertical -->
+            <a class="nav-link linkcustom my-4 btn" href="index_logged.html" role="button">
+                <h5><i class="bi bi-house"> Inicio </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="products_logged.html" role="button">
+                <h5><i class="bi bi-basket"> Productos </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="gallery_logged.html" role="button">
+                <h5><i class="bi bi-images"> Galería </i></h5>
+            </a>
+            <a class="nav-link linkcustom my-4 btn" href="#" role="button">
+                <h5><i class="bi bi-info-circle"> Acerca de </i></h5>
+            </a>
+        </div>
+    </div>
+    <!-- Fin del menú vertical -->
+    <!--Final navbar-->
+    <!--AQUÍ VAN LAS SECCIONES-->
+
     <!-- Inicio del "Acerca de" -->
-    <section class="fixsection text-center text-white bg-dangerdark">
-        <h2 class="mb-4 text-italic-roman">Acerca de:</h2>
-        <!-- Inicio sección about -->
-        <section class="mb-5 mx-auto" style="max-width: 800px;">
-            <h3>¿Quiénes somos?</h3>
-            <p class="h5" style="line-height: 1.8;"> <!-- Aumenta el espacio entre líneas -->
-                Bienvenidos al Grupo Cero, un colectivo innovador de artistas plásticos apasionados por la exploración
-                artística y la colaboración creativa. Nuestro grupo, compuesto por talentosos pintores, escultores,
-                orfebres, tejedores y otros artistas, tiene como objetivo principal fomentar la diversidad y la
-                experimentación en el arte. En nuestro taller trabajamos juntos para crear obras que desafíen las
-                convenciones y reflejen nuestras perspectivas individuales únicas.
-            </p>
-            <p class="h5" style="line-height: 1.8;"> <!-- Aumenta el espacio entre líneas -->
-                Nos esforzamos por proporcionar un espacio inclusivo donde la creatividad florezca y donde los artistas
-                puedan crecer y desarrollarse. A través de nuestra sala de exhibición y café, buscamos compartir
-                nuestras
-                creaciones con la comunidad y fomentar un diálogo abierto sobre el arte y la expresión. Con nuestra
-                página
-                web, aspiramos a expandir nuestro alcance y conectar con un público más amplio, inspirando a otros a
-                explorar su propio potencial creativo. En el Grupo Cero, creemos en el poder transformador del arte y
-                estamos comprometidos a seguir explorando nuevos horizontes en la búsqueda de la innovación y la
-                belleza.
-            </p>
-        </section>
-        <!-- Fin sección about -->
-    </section>
+    <!--Inicio contenedor-->
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-12 col-md-10 col-lg-8 text-center">
+                <h2 class="mb-4 display-5">Sobre Nosotros - Grupo Cero</h2>
+                <p class="text-secondary mb-5 lead fs-4">Desde nuestros humildes comienzos como una cooperativa de
+                    artistas plásticos, “Grupo Cero” ha evolucionado para convertirse en un crisol de creatividad y
+                    expresión artística. Nuestra pasión por la pintura, escultura y orfebrería nos llevó a crear un
+                    espacio único donde el arte y la comunidad se entrelazan.
+
+                    Con el tiempo, nuestra visión se expandió más allá de los lienzos y las esculturas, abrazando la
+                    vibrante escena musical de Japón. Hoy, “Grupo Cero” se reinventa como una plataforma dedicada a la
+                    música, con el objetivo de ser un puente cultural que une a los amantes de la música de todo el
+                    mundo.
+
+                    Nuestra web es un escaparate de talento, diversidad y pasión. Aquí, los sonidos tradicionales del
+                    enka se fusionan con el dinamismo del J-pop, el rock, el jazz y la electrónica, creando una
+                    experiencia auditiva sin igual. En “Grupo Cero”, celebramos la música que trasciende fronteras y
+                    conecta corazones.
+
+                    Bienvenidos a nuestro mundo, donde el arte se convierte en melodía.</p>
+                <hr class="w-50 mx-auto mb-5 border-dark-subtle">
+            </div>
+        </div>
+    </div>
+    <!--Final contenedor-->
     <!-- Fin del "Acerca de" -->
 
     <!-- Inicio del formulario de contacto -->
-    <section class="text-center bg-dark text-white fixsection">
+    <section class="text-center my-5 container">
         <h2 class="text-center pt-4 mb-4 text-italic-roman">Contáctenos:</h2>
         <form action="#" method="POST">
             <div class="row justify-content-center">
@@ -159,20 +185,17 @@
     </section>
     <!-- Fin del formulario de contacto -->
 
-    <!-- Footer -->
-    <footer class="banner">
-        <div class="banner-img"></div>
-        <div class="banner-content">
-            <p class="mb-0 h3" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">GRUPO
-                CERO -
-                COOPERATIVA ARTÍSTICA</p>
-            <p style="font-family: Verdana, Geneva, Tahoma, sans-serif;">TODOS LOS DERECHOS RESERVADOS @ 2024</p>
+    <!--Inicio footer-->
+    <footer class="footer mt-auto py-3 bg-success">
+        <div class="container text-center py-3">
+            <span class="text-white">&copy; 2024 Grupo Cero. Todos los derechos reservados.</span>
         </div>
     </footer>
-    <!-- Fin del footer -->
-    <!--INICIO Scripts-->
+    <!--Final footer-->
+    <!--Scripts del html-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!--FINAL Scripts-->
+    <!--Bootstrap 5 js-->
+    <!--Final Scripts del html-->
 </body>
 
 </html>

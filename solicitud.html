@@ -1,107 +1,111 @@
 <!DOCTYPE html>
 <html lang="es-CL">
-<!--INICIO HEAD-->
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grupo Cero - Cooperativa Artística</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" /> <!--Estilo personalizado-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo Cero - PAGINA</title>
+    <!--Bootstrap 5 css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Bootstrap 5 Iconos-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!--CSS Custom-->
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<!--FINAL HEAD-->
-<!--INICIO BODY-->
 
 <body>
-  <!-- Inicio menú con logo -->
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <div class="container-fluid">
-        <!-- Logo al principio -->
-        <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 40px"
-                alt="Logo GC" class="rounded-pill" /></a>
+    <!--Inicio navbar-->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <!-- Botón para el menú colapsable visible en dispositivos móviles -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Fin del botón para el menú colapsable -->
 
-        <!-- Botón de colapsable -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <a class="navbar-brand d-flex w-50 me-auto" href="#"><img class="rounded-pill" src="img/main_logo.jpg"
+                    alt="LOGO" style="width: 50px;"></a>
 
-        <!-- Contenido del menú -->
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <!-- Sección "Mi cuenta" al lado del logo -->
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle activo" href="#" role="button" data-bs-toggle="dropdown">
-                        Panel de Miembros
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item activo" href="#">Solicitud</a></li>
-                        <li><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <!-- Link con el logo de la cooperativa -->
+
+            <div class="collapse navbar-collapse w-100" id="navbarNavDropdown">
+                <!--Link al login-->
+                <ul class="navbar-nav w-100 justify-content-end ms-auto">
+                    <li class="nav-item dropdown mt-3 me-5">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Miembro de
+                            la cooperativa</a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="index.html">Cerrar sesión</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--Final navbar-->
+
+    <!--AQUÍ VAN LAS SECCIONES-->
+    <!-- Form SOLICITUD-->
+    <div class="mt-5 mb-5 p-5 rounded text-justify container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="#" class="form-register" method="post" enctype="multipart/form-data">
+
+                    <h1 class="form-title text-center pt-5 pb-4">Solicitud</h1>
+                    <p style="font-family: sans-serif;" class="text-secondary">Por favor, completa el siguiente
+                        formulario para enviar el sencillo a revisión.</p>
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label" style="font-family: sans-serif;">Título:</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label"
+                            style="font-family: sans-serif;">Descripción:</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="archivo" class="form-label" style="font-family: sans-serif;">Imagen del
+                            álbum:</label>
+                        <input type="file" class="form-control" id="archivo" name="archivo" required>
+                        <small class="form-text text-muted">Selecciona una imagen de alta calidad que represente tu
+                            canción/música.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="archivo" class="form-label" style="font-family: sans-serif;">Audio:</label>
+                        <input type="file" class="form-control" id="archivo" name="archivo" required>
+                        <small class="form-text text-muted">Sube un audio de alta calidad del tema.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tecnica" class="form-label" style="font-family: sans-serif;">Artista:</label>
+                        <input type="text" class="form-control" id="tecnica" name="tecnica" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio" class="form-label" style="font-family: sans-serif;">Precio:</label>
+                        <input type="number" class="form-control" id="precio" name="precio" required>
+                    </div>
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-success form-submit"
+                            style="font-family: sans-serif;">Enviar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</nav>
-<!--FIN DEL MENU CON LOGO-->
-
-
-
-
-<!-- BOTTON VOLVER AL PANEL DE MIEMBROS-->
-  
-<div class="text-center pt-5 pb-0 ">
-  <a href="members.html" class="btn btn-outline-danger">Volver al panel</a>
-</div>
-
-
-<!-- FIN BOTON VOLVER AL PANEL DE MIEMBROS -->
-
-
-
-
-
-  <!-- Form SOLICITUD-->
-  <div class="container bg-dark text-white mt-5 mb-5 p-5 rounded text-justify">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <form action="#" class="form-register" method="post" enctype="multipart/form-data">
-
-          <h1 class="form-title text-center pt-5 pb-4" style="font-family: sans-serif;">Solicitud</h1>
-          <p style="font-family: sans-serif;" class="text-secondary">Por favor, completa el siguiente formulario para
-            publicar tu obra.</p>
-          <div class="mb-3">
-            <label for="titulo" class="form-label" style="font-family: sans-serif;">Título:</label>
-            <input type="text" class="form-control" id="titulo" name="titulo" required>
-          </div>
-          <div class="mb-3">
-            <label for="descripcion" class="form-label" style="font-family: sans-serif;">Descripción:</label>
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="archivo" class="form-label" style="font-family: sans-serif;">Archivo:</label>
-            <input type="file" class="form-control" id="archivo" name="archivo" required>
-            <small class="form-text text-muted">Selecciona una imagen de alta calidad que represente tu obra.</small>
-          </div>
-          <div class="mb-3">
-            <label for="tecnica" class="form-label" style="font-family: sans-serif;">Técnica:</label>
-            <input type="text" class="form-control" id="tecnica" name="tecnica" required>
-          </div>
-          <div class="mb-3">
-            <label for="precio" class="form-label" style="font-family: sans-serif;">Precio:</label>
-            <input type="number" class="form-control" id="precio" name="precio" required>
-          </div>
-          <div class="text-center mt-5">
-            <button type="submit" class="btn btn-danger form-submit" style="font-family: sans-serif;">Enviar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- FIN Form SOLICITUD-->
-
-  <!--INICIO Scripts-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!--FINAL Scripts-->
-
+    <!--Inicio footer-->
+    <footer class="footer mt-auto py-3 bg-success">
+        <div class="container text-center py-3">
+            <span class="text-white">&copy; 2024 Grupo Cero. Todos los derechos reservados.</span>
+        </div>
+    </footer>
+    <!--Final footer-->
+    <!--Scripts del html-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!--Bootstrap 5 js-->
+    <!--Final Scripts del html-->
 </body>
+
+</html>

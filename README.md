@@ -24,9 +24,7 @@ por lo cual saben que características les gustaría que su página web presenta
 11. El proceso para agregar nuevas obras es el siguiente:
     a. Cada integrante de la cooperativa posee una cuenta creada por el administrador del sitio.
     b. Una vez que el integrante ingresa al sitio (email y password), puede publicar la obra que quiere vender llenando todos los datos en el formulario dispuesto para esto. (Listo)
-    c. La obra no se publica en la página hasta que pasa por el visto bueno del administrador, el cual puede rechazar la publicación por mala redacción o faltas de ortografía
-    o porque las imágenes son de mala calidad. (Listo)
-    d. Si el administrador rechaza la publicación, debe informar por qué lo hizo y el integrante de la cooperativa visualizará
-    esta información en el momento en que ingrese a la plataforma.
+    c. La obra no se publica en la página hasta que pasa por el visto bueno del administrador, el cual puede rechazar la publicación por mala redacción o faltas de ortografía o porque las imágenes son de mala calidad. (Listo)
+    d. Si el administrador rechaza la publicación, debe informar por qué lo hizo y el integrante de la cooperativa visualizará esta información en el momento en que ingrese a la plataforma. (Listo)
 12. No se considera aún el proceso de venta directa al público desde la plataforma, sino que sólo la publicación de las obras para ser exhibidas on-line. (Listo)
 13. Es fundamental que la página sea responsiva y que se adapte tanto a pantallas grandes como a pantallas de dispositivos móviles. (Listo)

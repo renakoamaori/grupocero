@@ -18,3 +18,17 @@ Desktop.ini
 # Archivos de registro (logs)
 *.log
 logs/
+
+# Ignorados por temas de copyright o licencias
+
+#Carpeta de audios
+audios/
+
+#Carpeta de imágenes
+img/
+
+#Ni loco subo imágenes con derechos de autor al repositorio.
+
+#Nota: El proyecto no podra cargar los audios que se utilizan como placeholder debido a que estos archivos estan siendo ignorados.
+#Tampoco podrá cargar las imágenes de la carpeta img por la misma razón.
+#De todas formas no rompe nada en el proyecto ya que los archivos de audio e imagen son solo de placeholder.
