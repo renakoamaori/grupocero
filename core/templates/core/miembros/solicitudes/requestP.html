@@ -10,21 +10,6 @@
 
 {% block navmenu %}{% endblock %}
 
-{% block navlogin %}
-    <li class="nav-item dropdown mt-3 me-5">
-        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Miembro de la cooperativa</a>
-        <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-                <a class="dropdown-item" href="/solicitud">Enviar Solicitud</a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="/">Cerrar sesión</a>
-
-            </li>
-        </ul>
-    </li>
-{% endblock %}
-
 {% block navcarrito %}{% endblock %}
 
 {% block contenido %}
@@ -87,12 +72,14 @@
     </div>
 </div>-->
 <div class="container">
+    <a href="/miembros" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Volver al panel de miembros</a>
     <div class="row justify-content-center">
         <div class="col-md-6">
+            {% load crispy_forms_tags %}
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form }}
-                <input class="btn btn-success mb-5" type="submit" value="Enviar">
+                {{ form | crispy}}
+                <input class="btn btn-success my-5" type="submit" value="Enviar">
             </form>
             {{ msj }}
         </div>
@@ -101,4 +88,7 @@
 {% endblock %}
 
 {% block modals %}
+{% endblock %}
+
+{% block customfooter %}
 {% endblock %}

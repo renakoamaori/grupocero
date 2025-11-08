@@ -14,3 +14,13 @@
     --bs-pagination-active-bg: #198754;
     --bs-pagination-hover-bg: #376e37;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  footer {
+    margin-top: auto;
+  }  
