@@ -15,20 +15,52 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# Archivos de registro (logs)
+# Archivos de configuración local y secretos
+.env
+local_settings.py
+
+# Base de Datos
+db.sqlite3
+*.sqlite3
+*.sqlite3-journal
+
+# Archivos multimedia
+/media/
+
+# Archivos estáticos
+/staticfiles/
+/static_root/
+
+# Archivos de caché y compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entornos virtuales de Python
+venv/
+env/
+.venv/
+*/venv/
+*/env/
+*/.venv/
+
+# Archivos de IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de registro
 *.log
 logs/
 
-# Ignorados por temas de copyright o licencias
+# Reportes de cobertura
+.coverage
+.coverage.*
+htmlcov/
 
-#Carpeta de audios
-audios/
-
-#Carpeta de imágenes
-img/
-
-#Ni loco subo imágenes con derechos de autor al repositorio.
-
-#Nota: El proyecto no podra cargar los audios que se utilizan como placeholder debido a que estos archivos estan siendo ignorados.
-#Tampoco podrá cargar las imágenes de la carpeta img por la misma razón.
-#De todas formas no rompe nada en el proyecto ya que los archivos de audio e imagen son solo de placeholder.
+# Artefactos de construcción
+build/
+dist/
+*.egg-info/

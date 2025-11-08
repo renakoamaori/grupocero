@@ -1,0 +1,174 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block titulo %}<title>Grupo Cero - Miembros</title>{% endblock %}
+
+{% block navmenuver %}{% endblock %}
+
+{% block navbuscar %}{% endblock %}
+
+{% block navmenu %}{% endblock %}
+
+{% block navlogin %}
+    <li class="nav-item dropdown mt-3 me-5">
+        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown">Miembro de la cooperativa</a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <a class="dropdown-item" href="/solicitud">Enviar Solicitud</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="/">Cerrar sesión</a>
+
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block navcarrito %}{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5 mb-5">
+    <h1 class="text-center">Estado solicitud </h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Lista de solicitudes de obras -->
+            <ul class="list-group mt-3" style="list-style: none;">
+                <li>
+                    <!-- Cada obra es un enlace que abre el modal de revisión -->
+                    <a href="#" class="list-group-item d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#modalSolicitud1">
+                        光のない街
+                        <span class="badge bg-success rounded-pill">Aprobado</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="list-group-item d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#modalSolicitud2">
+                        ハカイヨノユメ
+                        <span class="badge bg-warning rounded-pill">En espera</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="list-group-item d-flex justify-content-between align-items-center"
+                        data-bs-toggle="modal" data-bs-target="#modalSolicitud3">
+                        ODLOP
+                        <span class="badge bg-danger rounded-pill">Rechazado</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- Modal solicitud en espera -->
+<div class="modal" id="modalSolicitud1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Solicitud 光のない街 </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Esta solicitud actualmente se encuentra <strong>aprobada</strong> por el Administrador.
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal solicitud en espera -->
+<div class="modal" id="modalSolicitud2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Solicitud ハカイヨノユメ</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Esta solicitud actualmente se encuentra en <strong>modo de espera</strong> a ser revisado por el Administrador.
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal solicitud rechazada -->
+<div class="modal" id="modalSolicitud3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Solicitud ODLOP</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <ul>
+                    <li>
+                        <strong>Detalles de la solicitud:</strong>
+                        <p>Estimado solicitante,</p>
+                        <p>Lamentamos informarle que su solicitud para la publicación de la obra musical no puede ser aprobada en su estado actual. A continuación, detallamos los motivos específicos de nuestro rechazo:</p>
+                        <ul>
+                            <li>
+                                <strong>Título Inapropiado:</strong> El título proporcionado no cumple con los estándares de profesionalismo y relevancia esperados para una obra de esta índole.
+                            </li>
+                            <li>
+                                <strong>Descripción Inadecuada:</strong> La descripción suministrada carece de la seriedad y formalidad requeridas. Además, el tono jocoso empleado no se alinea con el carácter profesional de nuestra plataforma.
+                            </li>
+                            <li>
+                                <strong>Imagen Corrupta:</strong> Hemos detectado que la imagen del álbum está corrupta, lo cual impide su correcta visualización y afecta la presentación general de la obra.
+                            </li>
+                            <li>
+                                <strong>Audio Corrupto:</strong> El archivo de audio adjunto está dañado, lo que resulta en una imposibilidad para su reproducción. Es esencial que el material sonoro esté en perfecto estado para su evaluación y disfrute por parte de los usuarios.
+                            </li>
+                            <li>
+                                <strong>Ausencia de Información del Artista:</strong> No se ha proporcionado el nombre del artista, un dato crucial para la identificación y promoción adecuadas de la obra.
+                            </li>
+                            <li>
+                                <strong>Precio Excesivo:</strong> El precio estipulado excede los límites razonables y no refleja una valoración justa del mercado actual.
+                            </li>
+                        </ul>
+                        <p>Para proceder con la publicación, es imperativo corregir los puntos mencionados y asegurarse de que la presentación del sencillo cumpla con los estándares de calidad y profesionalismo que nuestros usuarios esperan y merecen.</p>
+                        <p>Atentamente, EL ADMIN.</p>
+                    </li>
+                </ul>
+            </div>                
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customfooter %}
+<footer class="footer py-3 bg-success" style="position: absolute; bottom: 0; width: 100%;">
+    <div class="container text-center">
+        <span class="text-white">&copy; 2024 Grupo Cero. Todos los derechos reservados.</span>
+    </div>
+</footer>
+{% endblock %}

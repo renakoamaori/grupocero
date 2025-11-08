@@ -1,0 +1,91 @@
+{% extends "core/base.html" %}
+{% load static %}
+{%block titulo %}<title>Grupo Cero - Inicio</title>{% endblock %}
+{% block contenido %}
+    <!-- Carrusel -->
+    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+        <!-- Indicators/dots -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+        </div>
+
+        <!-- The slideshow/carousel -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalfoto1"><img
+                        src=""
+                        alt="Suzuko Mimori" class="d-block w-100"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalfoto2"><img
+                        src=""
+                        alt="Akari Kitō" class="d-block w-100"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalfoto3"><img
+                        src=""
+                        alt="Tomori Kusunoki" class="d-block w-100"></a>
+            </div>
+        </div>
+
+        <!-- Left and right controls/icons -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+    <!--Fin carrusel-->
+    {% block albums %}
+        <!--INICIO ALBUMS-->
+        <section class="py-5 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="fw-light">Discografía</h1>
+                    <p class="lead text-muted">En el Grupo Cero, la música no es solo un producto; es una extensión de
+                        nuestra alma colectiva. Te invitamos a explorar, escuchar y dejarte llevar por la corriente creativa
+                        que nos une.</p>
+                </div>
+            </div>
+        </section>
+        {{block.super}}
+        {% block albumes %}
+        {% endblock %}
+        <div class="text-center pt-5 pb-5">
+            <a href="/productos#sencillos" class="btn btn-outline-success">Ver más colecciones</a>
+        </div>
+    {% endblock %}
+    <!--INICIO ARTISTAS-->
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Artistas</h1>
+                <p class="lead text-muted">Explora la galería donde la música y las artes visuales se fusionan. Cada
+                    artista presenta una muestra de su trabajo, ofreciendo una ventana a su mundo. Aquí, la música se
+                    convierte en color, forma y textura, y las obras visuales se transforman en partituras de emociones.
+                </p>
+            </div>
+        </div>
+        {% block artistas %}
+        {{block.super}}
+        {% block artistas2 %}
+        {% endblock %}
+        <div class="text-center pt-5 pb-5">
+            <a href="/productos#artistas" class="btn btn-outline-success">Ver más artistas</a>
+        </div>
+        {% endblock %}
+    </section>
+    <!--FINAL ARTISTAS-->
+{% endblock %}
+<!--BOTÓN MIEMBRO EN FOOTER-->
+{% block footer %}
+    <div class="container border-bottom pb-3 text-center">
+        <a href="/miembros" class="btn btn-outline-info">Acceso Miembros</a>
+    </div>
+{{block.super}}
+{% endblock %}
+    
