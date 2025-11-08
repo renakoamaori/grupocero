@@ -68,43 +68,88 @@ def procesar_listas(s, a, e, este_artista):
     return procesar_imagen(este_artista.imagen, este_artista)
 
 def get_artistaysusproductoshabilitados(artista_id):
-    este_artista = get_object_or_404(Artista, pk=artista_id)
-    tipo1 = get_object_or_404(TipoProducto, nom_tipo='cancion')
-    tipo2 = get_object_or_404(TipoProducto, nom_tipo='album')
-    tipo3 = get_object_or_404(TipoProducto, nom_tipo='ep')
+    aux = {}
+    try:
+        este_artista = Artista.objects.get(pk=artista_id)
+        aux['este_artista'] = este_artista
+    except Artista.DoesNotExist:
+        return aux
 
-    s = Producto.objects.filter(habilitado=True, tipo=tipo1, artista=este_artista)
-    a = Producto.objects.filter(habilitado=True, tipo=tipo2, artista=este_artista)
-    e = Producto.objects.filter(habilitado=True, tipo=tipo3, artista=este_artista)
-    
-    imagen_banner = procesar_listas(s, a, e, este_artista)
-    
-    aux = {
-        'este_artista': este_artista,
-        'productos_sencillos': s,
-        'productos_albums': a,
-        'productos_eps': e,
-        'imagen_banner': imagen_banner
-    }
+    try:
+        tipo1 = TipoProducto.objects.get(nom_tipo='cancion')
+        s = Producto.objects.filter(habilitado=True, tipo=tipo1, artista=este_artista)
+        aux['productos_sencillos'] = s
+    except TipoProducto.DoesNotExist:
+        pass
+
+    try:
+        tipo2 = TipoProducto.objects.get(nom_tipo='album')
+        a = Producto.objects.filter(habilitado=True, tipo=tipo2, artista=este_artista)
+        aux['productos_albums'] = a
+    except TipoProducto.DoesNotExist:
+        pass
+
+    try:
+        tipo3 = TipoProducto.objects.get(nom_tipo='ep')
+        e = Producto.objects.filter(habilitado=True, tipo=tipo3, artista=este_artista)
+        aux['productos_eps'] = e
+    except TipoProducto.DoesNotExist:
+        pass
+
+    if 'productos_sencillos' in aux or 'productos_albums' in aux or 'productos_eps' in aux:
+        imagen_banner = procesar_listas(s, a, e, este_artista)
+        aux['imagen_banner'] = imagen_banner
+
     return aux
 
 def get_artistasyproductoshabilitados():
+    aux = {}
+    try:
+        tipo1 = TipoProducto.objects.get(nom_tipo='cancion')
+        aux['productos_sencillos'] = Producto.objects.filter(habilitado=True, tipo=tipo1).order_by('pk')
+    except TipoProducto.DoesNotExist:
+        pass
 
-    tipo1 = get_object_or_404(TipoProducto, nom_tipo='cancion')
-    tipo2 = get_object_or_404(TipoProducto, nom_tipo='album')
-    tipo3 = get_object_or_404(TipoProducto, nom_tipo='ep')
-    aux = {
-        'artistas': Artista.objects.filter(habilitado=True),
-        'productos_sencillos': Producto.objects.filter(habilitado=True, tipo=tipo1),
-        'productos_albums': Producto.objects.filter(habilitado=True, tipo=tipo2),
-        'productos_eps': Producto.objects.filter(habilitado=True, tipo=tipo3)
-    }
+    try:
+        tipo2 = TipoProducto.objects.get(nom_tipo='album')
+        aux['productos_albums'] = Producto.objects.filter(habilitado=True, tipo=tipo2).order_by('pk')
+    except TipoProducto.DoesNotExist:
+        pass
+
+    try:
+        tipo3 = TipoProducto.objects.get(nom_tipo='ep')
+        aux['productos_eps'] = Producto.objects.filter(habilitado=True, tipo=tipo3).order_by('pk')
+    except TipoProducto.DoesNotExist:
+        pass
+
+    if Artista.objects.filter(habilitado=True).exists():
+        aux['artistas'] = Artista.objects.filter(habilitado=True).order_by('pk')
+
     return aux
 
+def get_info_modals():
+
+    modal_mimori = get_object_or_404(Producto, pk=11)
+    modal_akari = get_object_or_404(Producto, pk=18)
+    modal_tomori = get_object_or_404(Producto, pk=17)
+
+    return {
+        'modal_mimori': modal_mimori,
+        'modal_akari': modal_akari,
+        'modal_tomori': modal_tomori
+    }
 #VISTAS GENERALES:
 def index(request):
-    aux = get_artistasyproductoshabilitados()
-    return render(request, 'core/index.html', aux)
+    try:
+        aux = get_artistasyproductoshabilitados()
+        aux2 = get_info_modals()
+        
+        # Combinar los diccionarios
+        context = {**aux, **aux2}
+    except:
+        context = None
+
+    return render(request, 'core/index.html', context)
 def register(request):
     aux = {
         'form': registerForm()
@@ -116,7 +161,7 @@ def register(request):
             user = form.save(commit=False)
             user.tipo_usuario = tipo
             user.save()
-            group = Group.objects.get(name='comun')
+            group, created = Group.objects.get_or_create(name='comun')
             user.groups.add(group)
             user.save()
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
@@ -126,10 +171,13 @@ def register(request):
             aux['form'] = form
     return render(request, 'registration/register.html', aux)
 def products(request):
-    aux = get_artistasyproductoshabilitados()
+    try:
+        aux = get_artistasyproductoshabilitados()
+    except:
+        aux = None
     return render(request, 'core/products.html', aux)
 def gallery(request):
-    productos_list = Producto.objects.filter(habilitado=True)
+    productos_list = Producto.objects.filter(habilitado=True).order_by('pk')
     paginator = Paginator(productos_list, 6) # Muestra 6 productos por página
 
     page_number = request.GET.get('page')
@@ -141,9 +189,61 @@ def gallery(request):
 def about(request):
     return render(request, 'core/about.html')
 def carrito(request):
-    return render(request, 'core/carrito.html')
+    messages.get_messages(request).used = True
+    if request.user.is_authenticated:
+        aux = {
+            'carrito': Carrito.objects.filter(usuario=request.user)
+        }
+    else:
+        messages.error(request, '¡Por favor inicie sesión para comenzar a agregar productos al carrito!')
+        aux = None
+    return render(request, 'core/carrito.html', aux)
+def agregar_producto_carrito(request, producto_id):
+    messages.get_messages(request).used = True
+    if request.user.is_authenticated:
+        producto = get_object_or_404(Producto, pk=producto_id)
+        if Carrito.objects.filter(usuario=request.user, producto=producto):
+            messages.error(request, '¡El producto ya está en el carrito!')
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            c = Carrito(
+                usuario = request.user, 
+                producto = producto
+                )
+            c.save()
+            messages.success(request, '¡Producto agregado correctamente!')
+            return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        messages.error(request, '¡Debe haber iniciado sesión para agregar el producto al carrito!')
+    return redirect(request.META.get('HTTP_REFERER'))
+def eliminar_producto_carrito(request, producto_id):
+    messages.get_messages(request).used = True
+    if request.user.is_authenticated:
+        producto = get_object_or_404(Producto, pk=producto_id)
+        item = Carrito.objects.filter(usuario=request.user, producto=producto)
+        if item:
+            item.delete()
+        else:
+            messages.error(request, '¡El producto no existe en el carrito!')
+            return redirect('carrito')
+    else:
+        return redirect(request.META.get('HTTP_REFERER'))
+    return redirect('carrito')
+def cantidad_productos_carrito(request):
+    if request.user.is_authenticated:
+        try:
+            contador = Carrito.objects.filter(usuario=request.user).count()
+        except Exception as e:
+            print(e)
+            contador = 0
+    else:
+        contador = 0
+    return contador
 def artista(request, artista_id):
-    aux = get_artistaysusproductoshabilitados(artista_id)
+    try:
+        aux = get_artistaysusproductoshabilitados(artista_id)
+    except:
+        aux = None
     return render(request, 'core/artista.html', aux)
 #VISTAS DE MIEMBROS
 def miembros(request):
@@ -352,9 +452,8 @@ def aprobar_solicitud_a(request, solicitud_id):
                 
                 solicitud.imagen_artista.delete()
                 
-                solicitud.save()
+            solicitud.save()
             msj = "¡Solicitud aprobada y Artista agregado correctamente!"
-            asyncio.wait(5)
             return redirect('administradores')
         else:
             msj = "Hubo un problema al procesar el formulario."
@@ -367,11 +466,12 @@ def aprobar_solicitud_p(request, solicitud_id):
         form = AprobarSolicitudForm(request.POST)
         if form.is_valid():
             solicitud.estado = 'A'
+            tipo = get_object_or_404(TipoProducto, nom_tipo=solicitud.tipo_producto)
             producto = Producto(
                 titulo=solicitud.nombre_producto,
                 descripcion=solicitud.descripcion_producto,
                 artista=solicitud.artista_producto,
-                tipo=solicitud.tipo_producto,
+                tipo=tipo,
                 precio=solicitud.precio_producto
             )
             producto.save()
@@ -386,12 +486,11 @@ def aprobar_solicitud_p(request, solicitud_id):
                 # Eliminar archivo original en la ruta de origen
                 os.remove(solicitud.imagen_producto.path)  # <---- Aquí se elimina el archivo original
                 solicitud.imagen_producto.delete()
-                solicitud.save()
+            solicitud.save()
             if producto.tipo.nom_tipo == "cancion":
                 msj = f"¡Solicitud aprobada y {producto.tipo.nom_tipo} agregada correctamente!"
             else:
                 msj = f"¡Solicitud aprobada y {producto.tipo.nom_tipo} agregado correctamente!"
-            asyncio.wait(5)
             return redirect('administradores')
         else:
             msj = "Hubo un problema al procesar el formulario."
@@ -517,6 +616,7 @@ def enable_or_disable_producto(request, producto_id):
     }
     return JsonResponse(data)
 def listar_para_administradores(request):
+    messages.get_messages(request).used = True
     tipo = get_object_or_404(TipoUsuario, nom_tipo='miembro')
     aux = {
         'artistas': Artista.objects.all(),
@@ -524,6 +624,27 @@ def listar_para_administradores(request):
         'miembros': Usuario.objects.filter(tipo_usuario=tipo)
     }
     return render(request, 'core/administradores/crud/list.html', aux)
+def agregar_miembro(request):
+    storage = messages.get_messages(request)
+    storage.used = True
+    aux = { 'form': registerForm()
+    }
+    if request.method == 'POST':
+        form = registerForm(request.POST)
+        if form.is_valid():
+            tipo = get_object_or_404(TipoUsuario, nom_tipo='miembro')
+            user = form.save(commit=False)
+            user.tipo_usuario = tipo
+            user.save()
+            group, created = Group.objects.get_or_create(name='miembro')
+            user.groups.add(group)
+            user.save()
+            messages.success(request, f'Cuenta para el miembro #{user.pk}-{user.username} agregada correctamente!')
+            return redirect('administradores')
+        else:
+            aux['form'] = form
+            messages.error(request, 'El form no es valido!')
+    return render(request, 'core/administradores/crud/miembros_add.html', aux)
 def editar_miembro(request, miembro_id):
     storage = messages.get_messages(request)
     storage.used = True
@@ -545,4 +666,32 @@ def editar_miembro(request, miembro_id):
             messages.error(request, 'El form no es valido!')
             #aux['msj'] = "¡La contraseña no es valida!"
     return render(request, 'core/administradores/crud/updateM.html', aux)
-    
+def eliminar_miembro(request, miembro_id):
+    storage = messages.get_messages(request)
+    storage.used = True
+    miembro = get_object_or_404(Usuario, pk=miembro_id)
+    try:
+        miembro.delete()
+    except Exception as e:
+        print(e)
+        messages.error(request, 'No se pudo eliminar al miembro!')
+        return redirect('administradores')
+    messages.success(request, '¡Miembro eliminado correctamente!')
+    return redirect('administradores')
+def enable_or_disable_miembro(request, miembro_id):
+    miembro = get_object_or_404(Usuario, pk=miembro_id)
+    frase = ""
+    if miembro.is_active:
+        miembro.is_active = False
+        frase = "deshabilitado"
+    else:
+        miembro.is_active = True
+        frase = "habilitado"
+    miembro.save()
+
+    # Devolver una respuesta JSON con un mensaje y el nuevo estado del producto
+    data = {
+        'message': f'¡Miembro {frase} con éxito!',
+        'habilitado': miembro.is_active
+    }
+    return JsonResponse(data)

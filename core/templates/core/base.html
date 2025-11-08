@@ -164,6 +164,9 @@
                                         <a class="dropdown-item" href="{% url 'agregar_producto' %}">Agregar producto</a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item" href="{% url 'agregar_miembro' %}">Agregar miembro</a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item" href="{% url 'index' %}">Página de inicio</a>
                                     </li>
                                     <li>
@@ -191,7 +194,7 @@
                     {% endblock %}
                     {% block navcarrito %}
                     <li class="nav-item mt-3 d-flex">
-                        <p class="navbar-text">Cantidad de productos: <span id="product-count">3</span></p>
+                        <p class="navbar-text">Cantidad de productos: <span id="product-count">{{ cantidad }}</span></p>
                         <a class="btn" href="{% url 'carrito' %}">
                             <h4>
                                 <i class="bi bi-cart"></i>
@@ -241,122 +244,6 @@
         {% block eps %}
         {% endblock eps%}
     {% endblock contenido %}
-{% block modals %}
-    <!--Inicio modals para el carrusel-->
-    <!--Modal foto 1-->
-    <div class="modal fade" id="modalfoto1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">PINK♡BABY♡KISS♡</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <p>PINK♡BABY♡KISS♡ es el décimo sencillo de Mimori Suzuko. Fue lanzado el 2 de agosto de 2023 en
-                        conmemoración del décimo aniversario de su debut en solitario.</p>
-                    <!--INICIO SECCIÓN GALERÍA-->
-                    <section class="mb-5">
-                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                            <img class="card-img-top" src="{% static 'core/img/mimori_PBK_jacket-1.jpg' %}" alt="">
-                        </div>
-                        <div class="text-center pt-0 pb-0">
-                            <a href="/productos#artistas" class="btn btn-outline-danger">Más información del
-                                artista</a>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fin del modal foto 1-->
-    <!--Modal foto 2-->
-    <div class="modal fade" id="modalfoto2">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Yume no Ito</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <p>Yume no Ito (夢の糸) es el sexto sencillo de Kito Akari. Fue lanzado el 31 de enero de 2024 y
-                        alcanzó el puesto 19 en la lista de sencillos de Oricon.</p>
-                    <!--INICIO SECCIÓN GALERÍA-->
-                    <section class="mb-5">
-                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                            <img class="card-img-top"
-                                src=""
-                                alt="">
-                        </div>
-                        <div class="text-center pt-0 pb-0">
-                            <a href="/productos#artistas" class="btn btn-outline-danger">Más información del
-                                artista</a>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fin del modal foto 2-->
-    <!--Modal foto 3-->
-    <div class="modal fade" id="modalfoto3">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Shingetsu</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <p>El nuevo sencillo de Tomori Kusunoki, titulado “Shingetsu”, se lanzará el 8 de mayo de 2024.
-                        La canción es producida por TETSUYA, quien es el líder y bajista de L’Arc-en-Ciel. L’Arc-en-Ciel
-                        es un grupo que Tomori Kusunoki ha admirado desde su infancia.
-                    </p>
-                    <!--INICIO SECCIÓN GALERÍA-->
-                    <section class="mb-5">
-                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
-                            <img class="card-img-top"
-                                src=""
-                                alt="">
-                        </div>
-                        <div class="text-center pt-0 pb-0">
-                            <a href="/productos#artistas" class="btn btn-outline-danger">Más información del
-                                artista</a>
-                        </div>
-                    </section>
-                    <!--FINAL SECCIÓN GALERÍA-->
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fin del modal foto 3-->
-    <!--Fin del modal carrusel-->
-{% endblock modals %}
 
     <!--Inicio footer-->
     {% block customfooter %}

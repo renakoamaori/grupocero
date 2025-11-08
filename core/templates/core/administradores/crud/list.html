@@ -13,17 +13,6 @@
 {% block navcarrito %}{% endblock %}
 
 {% block contenido %}
-<!--
-    <div class="text-center my-5">
-    <h1 class="">Filtrar</h1>
-    <div class="container d-flex justify-content-center my-3">
-        <button id="mostrarArtistas" class="btn btn-outline-secondary mx-2">Mostrar Artistas</button>
-        <button id="mostrarProductos" class="btn btn-outline-secondary mx-2">Mostrar Productos</button>
-        <button id="mostrarUsuarios" class="btn btn-outline-secondary mx-2">Mostrar Usuarios</button>
-        <button id="mostrarTodas" class="btn btn-outline-secondary mx-2">Mostrar Todas</button>
-    </div>
-</div>
--->
 <div class="container d-flex justify-content-center">
     <section class="my-auto">
         {% if messages %}
@@ -187,8 +176,12 @@
                                         </div>
                                         <div class="modal-body text-center">
                                             <h5 class="my-3"><strong>Precio: </strong> {{ producto.precio_clp }}</h5>
+                                            {% if producto.imagen %}
                                             <p><strong>Imágen: </strong> <img src="{{producto.imagen.url}}"
-                                                    alt="{{producto.titulo}}" class="img-fluid"></p>
+                                                alt="{{producto.titulo}}" class="img-fluid"></p>
+                                            {% else %}
+                                            <p><strong>Imágen: </strong>No tiene</p>
+                                            {% endif %}
                                             <p><strong>Descripción: </strong></p>
                                             <p>{{ producto.obtener_descripcion_formateada|safe }}</p>
                                             <p><strong>Artista: </strong>{{ producto.artista.nombre }}</p>
@@ -233,8 +226,9 @@
                 <tbody>
                     {% for miembro in miembros %}
                     <tr>
-                        <td class="text-center"><button
-                                class="btn btn-{% if miembro.is_active %}success{% else %}danger{% endif %}">{% if miembro.is_active %}Habilitado{% else %}Deshabilitado{% endif %}</button></td>
+                        <td class="text-center">
+                            <button class="btn btn-{% if miembro.is_active %}success{% else %}danger{% endif %} toggle-miembro" data-id="{{miembro.pk}}">{% if miembro.is_active %}Habilitado{% else %}Deshabilitado{% endif %}</button>
+                        </td>
                         <td class="text-center">{{miembro.pk}}</td>
                         <td class="text-center">{{miembro.username}}</td>
                         {% if miembro.email %}
@@ -246,7 +240,7 @@
                             <a href="{% url 'editar_miembro' miembro_id=miembro.pk%}" class="btn btn-warning mx-2">Editar contraseña</a>
                         </td>
                         <td class="text-center">
-                            <button class="btn btn-danger mx-2">Eliminar</button>
+                            <button class="btn btn-danger mx-2 eliminar-miembro" data-url="{% url 'eliminar_miembro' miembro_id=miembro.pk %}">Eliminar</button>
                         </td>
                     </tr>
                     {% endfor %}

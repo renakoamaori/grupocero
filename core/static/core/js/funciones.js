@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=None" + secure;
     }
 
-    // Función para habilitar/deshabilitar artista o producto
+    // Función para habilitar/deshabilitar artista, producto o miembro
     function toggleHabilitado(tipo, id) {
         var baseUrl = window.location.origin;
         var url = `${baseUrl}/administradores/enable_or_disable_${tipo}/${id}/`;
@@ -82,6 +82,28 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // Seleccionar todos los botones de eliminar con la clase carrito
+    var botonesCarrito = document.querySelectorAll('.carrito');
+    botonesCarrito.forEach(function(boton) {
+        boton.addEventListener('click', function() {
+            var url = boton.getAttribute('data-url');
+            if (confirm("¿Estás seguro de que quieres eliminar este producto de tu carrito?")) {
+                window.location.href = url;
+            }
+        });
+    });
+
+    // Seleccionar todos los botones de eliminar con la clase eliminar-miembro
+    var botonesCarrito = document.querySelectorAll('.eliminar-miembro');
+    botonesCarrito.forEach(function(boton) {
+        boton.addEventListener('click', function() {
+            var url = boton.getAttribute('data-url');
+            if (confirm("¿Estás seguro de que quieres eliminar a este miembro?")) {
+                window.location.href = url;
+            }
+        });
+    });
+
     // Seleccionar todos los botones de habilitar/deshabilitar artistas con la clase toggle-artista
     var botonesToggleArtista = document.querySelectorAll('.toggle-artista');
     botonesToggleArtista.forEach(function(boton) {
@@ -97,6 +119,15 @@ document.addEventListener("DOMContentLoaded", function() {
         boton.addEventListener('click', function() {
             var productoId = boton.getAttribute('data-id');
             toggleHabilitado('producto', productoId);
+        });
+    });
+
+    // Seleccionar todos los botones de habilitar/deshabilitar productos con la clase toggle-miembro
+    var botonesToggleProducto = document.querySelectorAll('.toggle-miembro');
+    botonesToggleProducto.forEach(function(boton) {
+        boton.addEventListener('click', function() {
+            var miembroId = boton.getAttribute('data-id');
+            toggleHabilitado('miembro', miembroId);
         });
     });
 

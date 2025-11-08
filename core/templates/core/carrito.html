@@ -1,7 +1,24 @@
 {% extends "core/base.html" %}
 {% load static %}
-{%block titulo %}<title>Grupo Cero - Carrito</title>{% endblock %}
+{% block titulo %}<title>Grupo Cero - Carrito</title>{% endblock %}
 {% block contenido %}
+<div class="container d-flex justify-content-center">
+    <section class="my-auto">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "success" %}
+                    <div class="alert alert-success text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == "error" %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </section>
+</div>
     <!--Inicio del carrito de compras-->
     <section class="pt-5 pb-5">
         <div class="container">
@@ -9,107 +26,52 @@
                 <div class="col-lg-12 col-md-12 col-12">
                     <h3 class="display-5 mb-2 text-center">Carro de compras</h3>
                     <p class="mb-5 text-center">
-                        <i class="text-info fw-bold">3</i> productos en el carrito
+                        <i class="text-info fw-bold">{{ carrito.count }}</i> productos en el carrito
                     </p>
                     <table id="shoppingCart" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th style="width:60%">Producto</th>
+                                <th style="width: 14%;">Artista</th>
                                 <th style="width:12%">Precio</th>
                                 <th style="width:10%">Cantidad</th>
                                 <th style="width:16%"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            {% for item in carrito %}
+                            <tr class="product-row">
                                 <td>
                                     <div class="row">
                                         <div class="col-md-3 text-start">
-                                            <img src="{% static 'core/img/mimori_RPB_normal_RGB.jpg' %}" alt="RPB"
+                                            <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.titulo }}"
                                                 class="img-fluid d-none d-md-block rounded mb-2 shadow">
                                         </div>
                                         <div class="col-md-9 text-start mt-sm-2">
-                                            <h4>RPB</h4>
-                                            <p class="fw-light">Suzuko Mimori</p>
+                                            <h4>{{ item.producto.titulo }}</h4>
+                                            <p class="fw-light">{{ item.producto.descripcion_breve }}</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td>$37.221</td>
+                                <td>{{ item.producto.artista.nombre }}</td>
+                                <td class="product-price" data-price="{{ item.producto.precio }}">{{ item.producto.precio_clp }}</td>
                                 <td>
-                                    <input type="number" class="form-control form-control-lg text-center" value="1">
+                                    <input type="number" class="form-control form-control-lg text-center product-quantity" value="1" min="1">
                                 </td>
                                 <td class="actions">
                                     <div class="text-end">
-                                        <button class="btn btn-outline-dark btn-md mb-2">
-                                            <i class="bi bi-arrow-repeat"></i>
-                                        </button>
-                                        <button class="btn btn-outline-dark btn-md mb-2">
+                                        <button class="btn btn-outline-danger btn-md mb-2 carrito" data-url="{% url 'carritodelete' producto_id=item.producto.pk%}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-3 text-start">
-                                            <img src="{% static 'core/img/presence.jpg' %}" alt=""
-                                                class="img-fluid d-none d-md-block rounded mb-2 shadow">
-                                        </div>
-                                        <div class="col-md-9 text-start mt-sm-2">
-                                            <h4>PRESENCE</h4>
-                                            <p class="fw-light">Tomori Kusunoki</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>$24.804</td>
-                                <td>
-                                    <input type="number" class="form-control form-control-lg text-center" value="1">
-                                </td>
-                                <td class="actions">
-                                    <div class="text-end">
-                                        <button class="btn btn-outline-dark btn-md mb-2">
-                                            <i class="bi bi-arrow-repeat"></i>
-                                        </button>
-                                        <button class="btn btn-outline-dark btn-md mb-2">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-3 text-start">
-                                            <img src="https://titipjepang.com/wp-content/uploads/2023/01/ICD-0981.jpg" alt="AoWoIkiru"
-                                                class="img-fluid d-none d-md-block rounded mb-2 shadow">
-                                        </div>
-                                        <div class="col-md-9 text-start mt-sm-2">
-                                            <h4>EP Ao wo Ikiru</h4>
-                                            <p class="fw-light">Rie Takahashi</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>$26.702</td>
-                                <td>
-                                    <input type="number" class="form-control form-control-lg text-center" value="1">
-                                </td>
-                                <td class="actions">
-                                    <div class="text-end">
-                                        <button class="btn btn-outline-dark btn-md mb-2">
-                                            <i class="bi bi-arrow-repeat"></i>
-                                        </button>
-                                        <button class="btn btn-outline-dark btn-md mb-2">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                     <div class="text-end">
                         <h4>Subtotal:</h4>
-                        <h1>$88.727</h1>
+                        <h1 id="subtotal"></h1>
                     </div>
                 </div>
             </div>
@@ -125,4 +87,70 @@
         </div>
     </section>
     <!--Fin del carrito de compras-->
+
+    <script>
+        window.onload = function() {
+            console.log('Script cargado y ejecutado');
+            // Obtén todas las filas de productos
+            let productRows = document.getElementsByClassName('product-row');
+
+            // Verifica que productRows no esté vacío
+            if (productRows.length === 0) {
+                console.log('No se encontraron filas de productos.');
+                return;
+            }
+
+            // Añade un event listener a cada campo de cantidad
+            for (let i = 0; i < productRows.length; i++) {
+                let quantityField = productRows[i].getElementsByClassName('product-quantity')[0];
+                quantityField.addEventListener('change', updateSubtotal);
+                console.log('Event listener añadido a:', quantityField);
+            }
+
+            // Calcula el subtotal inicial
+            updateSubtotal();
+        }
+
+        function formatCLP(number) {
+            // Crea un objeto Intl.NumberFormat para el formato de moneda chilena
+            let formatter = new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+                minimumFractionDigits: 0
+            });
+
+            // Usa el formateador para convertir el número a formato de moneda
+            return formatter.format(number);
+        }
+
+        function updateSubtotal() {
+            console.log('Actualizando subtotal...');
+            let total = 0;
+            let productRows = document.getElementsByClassName('product-row');
+
+            // Calcula el nuevo subtotal
+            for (let i = 0; i < productRows.length; i++) {
+                let priceElement = productRows[i].getElementsByClassName('product-price')[0];
+                // Usa el atributo de datos para obtener el precio sin formato
+                let price = parseFloat(priceElement.getAttribute('data-price'));
+                let quantityField = productRows[i].getElementsByClassName('product-quantity')[0];
+                let quantity = parseInt(quantityField.value);
+
+                // Validar que la cantidad no sea menor que 1
+                if (quantity < 1) {
+                    quantity = 1;
+                    quantityField.value = 1;
+                }
+
+                total += price * quantity;
+                console.log(`Producto ${i + 1}: precio = ${price}, cantidad = ${quantity}, subtotal = ${total}`);
+            }
+
+            // Formatea el subtotal como un precio en CLP
+            let formattedTotal = formatCLP(total);
+
+            // Actualiza el subtotal en la página
+            document.getElementById('subtotal').innerText = formattedTotal;
+        }
+    </script>
 {% endblock %}

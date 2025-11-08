@@ -45,9 +45,17 @@
                                                 <h5 class="mb-5">Detalles de la solicitud</h5>
                                                 <p><strong>Usuario:</strong> {{artista.usuario.username}} </p>
                                                 <p><strong>Artista:</strong> {{artista.nombre_artista}} </p>
+                                                {% if artista.fecha_nacimiento_artista %}
                                                 <p><strong>Fecha de nacimiento Artista:</strong> {{artista.fecha_nacimiento_artista}} </p>
+                                                {% else %}
+                                                <p><strong>Fecha de nacimiento Artista:</strong> No definida por el solicitante </p>
+                                                {% endif %}
                                                 <p><strong>Biografía Artista:</strong> {{artista.biografia_artista}} </p>
+                                                {% if artista.imagen %}
                                                 <p><strong>Imagén Artista: </strong><img src="{{ artista.imagen_artista.url }}" alt="{{ artista.nombre_artista }}" style="max-width: 100%; height: auto;"></p>
+                                                {% else %}
+                                                <p><strong>Imagén Artista: </strong> No tiene </p>
+                                                {% endif %}
                                                 {% if not artista.sitio_web_artista|striptags or artista.sitio_web_artista is None %}
                                                 <p><strong>Sitio web Artista:</strong> No tiene </p>
                                                 {%else%}
@@ -107,7 +115,11 @@
                                                 <p><strong>EP:</strong> {{producto.nombre_producto}} </p>
                                                 {%endif%}
                                                 <p><strong>Precio:</strong> {{producto.precio_producto}} </p>
+                                                {% if producto.imagen %}
                                                 <p><strong>Imagén Producto: </strong><img src="{{ producto.imagen_producto.url }}" alt="{{ producto.nombre_producto }}" style="max-width: 100%;"></p>
+                                                {% else %}
+                                                <p><strong>Imagén Producto: </strong>No tiene</p>
+                                                {% endif %}
                                                 <p><strong>Descripción:</strong> {{producto.descripcion_producto}} </p>
                                             </div>
                                 

@@ -62,7 +62,11 @@
                                                         Esta solicitud actualmente se encuentra <strong>{{ artista.get_estado_display }}</strong> por el Administrador.
                                                     {% elif artista.estado == 'E' %}
                                                         <p class="text-center"><strong>Detalles:</strong></p>
+                                                        {% if artista.imagen_artista %}
                                                         <p><strong>Imágen: </strong><img src="{{artista.imagen_artista.url}}" alt="{{artista.nombre_artista}}" style="max-width: 100%;"></p>
+                                                        {% else %}
+                                                        <p><strong>Imágen: </strong>No tiene</p>
+                                                        {% endif %}
                                                         <p><strong>Nombre: </strong>{{artista.nombre_artista}}</p>
                                                         <p><strong>Fecha de nacimiento: </strong>{{artista.fecha_nacimiento_artista}}</p>
                                                         {% if not artista.sitio_web_artista|striptags or artista.sitio_web_artista is None %}
@@ -138,7 +142,11 @@
                                                     {% elif producto.estado == 'E' %}
                                                         <p class="text-center"><strong>Detalles:</strong></p>
                                                         <p><strong>Título: </strong>{{producto.nombre_producto}}</p>
+                                                        {% if producto.imagen_producto %}
                                                         <p><strong>Imágen: </strong><img src="{{producto.imagen_producto.url}}" alt="{{producto.nombre_producto}}" style="max-width: 100%;"></p>
+                                                        {% else %}
+                                                        <p><strong>Imágen: </strong>No tiene</p>
+                                                        {% endif %}
                                                         <p><strong>Artista: </strong>{{producto.artista_producto.nombre}}</p>
                                                         <p><strong>Tipo producto: </strong>{{producto.get_tipo_producto_display}}</p>
                                                         <p><strong>Precio: </strong>{{producto.precio_producto}}</p>

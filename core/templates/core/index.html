@@ -40,7 +40,133 @@
     </button>
 </div>
 <!--Fin carrusel-->
+
+    <!--Inicio modals para el carrusel-->
+    <!--Modal foto 1-->
+    <div class="modal fade" id="modalfoto1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">{{modal_mimori.titulo}}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <p>{{modal_mimori.descripcion}}</p>
+                    <section class="mb-5">
+                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
+                            <img class="card-img-top" src="{{modal_mimori.imagen.url}}" alt="{{modal_mimori.titulo}}">
+                        </div>
+                        <div class="text-center pt-0 pb-0">
+                            <a href="{% url 'artista' artista_id=modal_mimori.artista.pk %}" class="btn btn-outline-danger">Más información del
+                                artista</a>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del modal foto 1-->
+    <!--Modal foto 2-->
+    <div class="modal fade" id="modalfoto2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">{{modal_akari.titulo}}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <p>{{modal_akari.descripcion}}</p>
+                    <!--INICIO SECCIÓN GALERÍA-->
+                    <section class="mb-5">
+                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
+                            <img class="card-img-top"
+                                src="{{modal_akari.imagen.url}}"
+                                alt="{{modal_akari.titulo}}">
+                        </div>
+                        <div class="text-center pt-0 pb-0">
+                            <a href="{% url 'artista' artista_id=modal_akari.artista.pk %}" class="btn btn-outline-danger">Más información del
+                                artista</a>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del modal foto 2-->
+    <!--Modal foto 3-->
+    <div class="modal fade" id="modalfoto3">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">{{modal_tomori.titulo}}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <p>{{modal_tomori.descripcion}}</p>
+                    <!--INICIO SECCIÓN GALERÍA-->
+                    <section class="mb-5">
+                        <div class="card h-100 border-0 mx-auto align-items-center mb-5">
+                            <img class="card-img-top"
+                                src="{{modal_tomori.imagen.url}}"
+                                alt="{{modal_tomori.titulo}}">
+                        </div>
+                        <div class="text-center pt-0 pb-0">
+                            <a href="{% url 'artista' artista_id=modal_tomori.artista.pk %}" class="btn btn-outline-danger">Más información del
+                                artista</a>
+                        </div>
+                    </section>
+                    <!--FINAL SECCIÓN GALERÍA-->
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del modal foto 3-->
+    <!--Fin del modal carrusel-->
 {% block albums %}
+<div class="container d-flex justify-content-center">
+    <section class="my-auto">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "success" %}
+                    <div class="alert alert-success text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == "error" %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </section>
+</div>
 <!--INICIO ALBUMS-->
 <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -72,7 +198,7 @@
                             <div class="btn-group mt-3">
                                 <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
                                     data-bs-target="#modalProducto{{producto.pk}}">Ver +</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2">Agregar al carrito</button>
+                                <a type="button" class="btn btn-sm btn-outline-secondary ms-2" href="{% url 'carritoadd' producto_id=producto.pk %}">Agregar al carrito</a>
                             </div>
                             <div>
                                 <p class="text-muted m-auto">{{producto.precio_clp}}</p>
@@ -181,11 +307,4 @@
     </div>
 </section>
 <!--FINAL ARTISTAS-->
-{% endblock %}
-<!--BOTÓN MIEMBRO EN FOOTER-->
-{% block footer %}
-<div class="container border-bottom pb-3 text-center">
-    <a href="/miembros" class="btn btn-outline-info">Acceso Miembros</a>
-</div>
-{{block.super}}
 {% endblock %}

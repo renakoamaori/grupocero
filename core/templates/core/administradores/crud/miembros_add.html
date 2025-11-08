@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block titulo %}<title>Grupo Cero - Inicio de sesión</title>{% endblock %}
+{% block titulo %}<title>Grupo Cero - Agregar miembro</title>{% endblock %}
 
 {% block navmenuver %}{% endblock %}
 
@@ -21,7 +21,7 @@
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100 text-center">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <h3>Inicio de sesión</h3>
+          <h3>Registrar miembro</h3>
           <div class="card" style="border-radius: 1rem;">
             <div class="card-body p-5 text-center">
               <div class="mb-md-5 mt-md-4 pb-5">
@@ -29,15 +29,9 @@
                 <form action="" method="POST">
                     {% csrf_token %}
                     {{form | crispy}}
-                    <input type="submit" value="Login" class="btn btn-success mt-5">
+                    <input type="submit" value="Registrar al miembro" class="btn btn-success mt-5">
                 </form>
               </div>
-  
-              <div>
-                <p class="mb-0">¿No tiene una cuenta? <a href="{% url 'register' %}" class="fw-bold">Registrese</a>
-                </p>
-              </div>
-  
             </div>
           </div>
         </div>

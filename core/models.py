@@ -72,7 +72,12 @@ class Producto(models.Model):
         return self.titulo
 
     def descripcion_breve(self):
-        return ' '.join(self.descripcion.split('.')[:2]) + '.'
+        # Elimina los puntos al inicio del texto
+        descripcion = self.descripcion.lstrip('.')
+        # Divide el texto en frases
+        frases = [frase for frase in descripcion.split('.') if frase]
+        # Une las dos primeras frases
+        return ' '.join(frases[:2]) + '.'
 
     def precio_clp(self):
         return "${:,.0f}".format(self.precio).replace(",", ".")
@@ -177,7 +182,7 @@ class SolicitudP(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='E')
     nombre_producto = models.CharField(max_length=100)
     descripcion_producto = models.TextField()
-    imagen_producto = models.ImageField(null=True, blank=True, upload_to=upload_to_temp)
+    imagen_producto = models.ImageField(blank=False, null=False, upload_to=upload_to_temp)
     artista_producto = models.ForeignKey(Artista, on_delete=models.CASCADE, default=None)
     tipo_producto = models.CharField(max_length=20, choices=TipoProducto.TIPO_CHOICES)
     precio_producto = models.IntegerField(default=0)
@@ -217,7 +222,6 @@ class SolicitudesRechazadas(models.Model):
         return f"Rechazo #{self.pk} - Solicitud #{self.solicitud.pk}"
     
 
-
-
-
-    
+class Carrito(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)

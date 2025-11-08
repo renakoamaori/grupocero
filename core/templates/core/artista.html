@@ -28,22 +28,25 @@
             </div>
         </div>
     </div>
-</section>  
-<div class="container">  
-    <section class="d-flex justify-content-center my-5">
-        <!-- Botones -->
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="btnradio1">Álbumes</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio2">Sencillos</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio3">EPs</label>
-        </div>
+</section>
+<div class="container d-flex justify-content-center">
+    <section class="my-auto">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "success" %}
+                    <div class="alert alert-success text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == "error" %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </section>
-
+</div>
+<div class="container">  
     <!-- Aquí va el código para mostrar los productos -->
     <div id="sencillos">
         <section class="py-5 text-center container">
@@ -72,7 +75,7 @@
                                     <div class="btn-group mt-3">
                                         <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
                                             data-bs-target="#modalProducto{{producto.pk}}">Ver +</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-2">Agregar al carrito</button>
+                                            <a type="button" class="btn btn-sm btn-outline-secondary ms-2" href="{% url 'carritoadd' producto_id=producto.pk %}">Agregar al carrito</a>
                                     </div>
                                     <div>
                                         <p class="text-muted m-auto">{{producto.precio_clp}}</p>
@@ -134,7 +137,7 @@
                                 <div class="btn-group mt-3">
                                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
                                         data-bs-target="#modalProducto{{producto.pk}}">Ver +</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2">Agregar al carrito</button>
+                                        <a type="button" class="btn btn-sm btn-outline-secondary ms-2" href="{% url 'carritoadd' producto_id=producto.pk %}">Agregar al carrito</a>
                                 </div>
                                 <div>
                                     <p class="text-muted m-auto">{{producto.precio_clp}}</p>
@@ -196,7 +199,7 @@
                                     <div class="btn-group mt-3">
                                         <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
                                             data-bs-target="#modalProducto{{producto.pk}}">Ver +</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-2">Agregar al carrito</button>
+                                            <a type="button" class="btn btn-sm btn-outline-secondary ms-2" href="{% url 'carritoadd' producto_id=producto.pk %}">Agregar al carrito</a>
                                     </div>
                                     <div>
                                         <p class="text-muted m-auto">{{producto.precio_clp}}</p>
