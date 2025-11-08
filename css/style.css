@@ -308,3 +308,76 @@ a:not([href]):not([class]), a:not([href]):not([class]):hover {
   background-color: #4b0a0a;
 }
 
+.formulario-admin{
+  
+  margin:60px auto;
+  font-family: 'Times New Roman', Times, serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+
+} 
+
+.form-register {
+  width: 95%;
+  max-width: 500px;
+  background: white;
+  padding: 20px;
+}
+
+.form-title{
+  margin-top:20px;
+  font-size: 40px; 
+  text-align: center;
+}
+
+.form-label, .form-imput{
+  display: block
+}
+.form-label{
+  width: 30%;
+  font-size: 25px;
+}
+.form-input{
+  width: 70%;
+  padding:10px;
+  font-size: 30px;
+
+}
+
+.from-file{
+  font-size: 20px;
+  margin: 10px 0;
+  width: 100%;
+
+
+}
+
+.container-flex {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.form-submit {
+width: 100%;
+background-color: #58151c;
+padding:10px;
+border:none;
+color: white;
+font-size: 25px;
+margin-top: 30px;
+cursor:pointer;
+
+
+
+}
+
+
+
+
+
+
+
